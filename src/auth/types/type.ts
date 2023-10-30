@@ -5,3 +5,15 @@ export type SignUpData = {
     id: number;
   };
 };
+
+export type LoginData = {
+  message: string;
+  user: {
+    id: number;
+    email: string;
+  };
+  tokens: {
+    refreshToken: string;
+    accessToken: string;
+  };
+};

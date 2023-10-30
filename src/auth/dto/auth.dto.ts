@@ -22,3 +22,14 @@ export class SignUpDto {
   @IsString()
   confirmPassword: string;
 }
+
+export class LoginDto {
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+}
