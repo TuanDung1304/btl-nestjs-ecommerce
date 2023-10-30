@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { SignUpDto } from 'src/auth/dto/auth.dto';
-import { SignUpData } from 'src/auth/types/type';
+import { LoginDto, SignUpDto } from 'src/auth/dto/auth.dto';
+import { LoginData, SignUpData } from 'src/auth/types/type';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -39,7 +39,50 @@ export class AuthService {
     };
   }
 
+  async login(dto: LoginDto): Promise<LoginData> {
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+    if (!user) throw new ForbiddenException('Account does not exist');
+
+    const { email, password, id } = user;
+
+    const passwordMatches = await bcrypt.compare(dto.password, password);
+    if (!passwordMatches) throw new ForbiddenException('Wrong password');
+
+    const accessToken = await this.getToken(id, email, 'at');
+    const refreshToken = await this.getToken(id, email, 'rt');
+
+    return {
+      tokens: {
+        accessToken,
+        refreshToken,
+      },
+      message: 'Login successful',
+      user: {
+        id,
+        email,
+      },
+    };
+  }
+
   hashData(data: string) {
     return bcrypt.hash(data, 10);
+  }
+
+  async getToken(userId: number, email: string, type: 'at' | 'rt') {
+    return await this.jwtService.signAsync(
+      {
+        sub: userId,
+        email,
+      },
+      {
+        secret:
+          type === 'at'
+            ? process.env.ACCESS_TOKEN_SECRET
+            : process.env.REFRESH_TOKEN_SECRET,
+        expiresIn: type === 'at' ? 600 : 3600,
+      },
+    );
   }
 }
