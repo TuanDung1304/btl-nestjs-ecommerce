@@ -45,13 +45,15 @@ export class AuthService {
     });
     if (!user) throw new ForbiddenException('Account does not exist');
 
-    const { email, password, id } = user;
+    const { email, password, id, role, avatar, firstName } = user;
 
     const passwordMatches = await bcrypt.compare(dto.password, password);
     if (!passwordMatches) throw new ForbiddenException('Wrong password');
 
-    const accessToken = await this.getToken(id, email, 'at');
-    const refreshToken = await this.getToken(id, email, 'rt');
+    const [accessToken, refreshToken] = await Promise.all([
+      this.getToken(id, email, 'at'),
+      this.getToken(id, email, 'rt'),
+    ]);
 
     return {
       tokens: {
@@ -62,6 +64,9 @@ export class AuthService {
       user: {
         id,
         email,
+        role,
+        avatar,
+        firstName,
       },
     };
   }
