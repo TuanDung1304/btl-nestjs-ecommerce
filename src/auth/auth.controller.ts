@@ -23,7 +23,7 @@ export class AuthController {
     return this.authService.signUp(dto);
   }
 
-  @Get('/login')
+  @Post('/login')
   @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto): Promise<LoginData> {
