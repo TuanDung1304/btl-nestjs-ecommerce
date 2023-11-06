@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Users } from '@prisma/client';
 
 export type SignUpData = {
   message: string;
@@ -10,7 +10,7 @@ export type SignUpData = {
 
 export type LoginData = {
   message: string;
-  user: Pick<User, 'avatar' | 'firstName' | 'role' | 'email' | 'id'>;
+  user: Pick<Users, 'avatar' | 'firstName' | 'role' | 'email' | 'id'>;
   tokens: {
     refreshToken: string;
     accessToken: string;
