@@ -27,6 +27,14 @@ export class CategoriesController {
   @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.OK)
   getProducts(@Param() { categoryId }) {
+    if (['ao-nam', 'quan-nam', 'phu-kien'].includes(categoryId))
+      return this.categoriesService.getProductsByCategoryType(
+        categoryId === 'ao-nam'
+          ? 'Áo'
+          : categoryId === 'quan-nam'
+          ? 'Quần'
+          : 'Phụ Kiện',
+      );
     return this.categoriesService.getProductsByCategory(categoryId);
   }
 }

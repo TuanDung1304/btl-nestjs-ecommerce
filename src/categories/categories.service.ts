@@ -31,4 +31,16 @@ export class CategoriesService {
 
     return category?.products ?? [];
   }
+  async getProductsByCategoryType(type: 'Áo' | 'Quần' | 'Phụ Kiện') {
+    const categories = await this.prismaService.categories.findMany({
+      where: { type },
+      include: { products: true },
+    });
+
+    const products = categories.reduce((acc, category) => {
+      return acc.concat(category.products);
+    }, []);
+
+    return products;
+  }
 }

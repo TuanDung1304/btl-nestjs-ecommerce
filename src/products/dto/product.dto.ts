@@ -4,6 +4,7 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   Min,
   ValidateNested,
@@ -35,6 +36,7 @@ export class CreateProductDto {
   @IsString()
   categoryId: string;
 
+  @IsOptional()
   @IsString()
   description?: string;
 
@@ -51,6 +53,7 @@ export class CreateProductDto {
   @Min(0)
   price: number;
 
+  @IsOptional()
   @IsNumber()
   @Min(0)
   discountedPrice?: number;
