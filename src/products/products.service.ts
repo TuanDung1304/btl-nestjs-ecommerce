@@ -69,5 +69,45 @@ export class ProductsService {
     };
   }
 
+  async getProductDetail(productId: number) {
+    const product = await this.prisma.products.findUnique({
+      where: { id: Number(productId) },
+      include: {
+        productModels: true,
+        images: true,
+      },
+    });
+    if (!product) {
+      throw new ForbiddenException('Product not found');
+    }
+
+    const {
+      id,
+      description,
+      discountedPrice,
+      images,
+      name,
+      price,
+      productModels,
+      thumbnail,
+    } = product;
+
+    return {
+      id,
+      name,
+      description,
+      price,
+      discountedPrice,
+      thumbnail,
+      images: images.map((image) => ({ url: image.url })),
+      productModels: productModels.map(({ id, quantity, color, size }) => ({
+        id,
+        quantity,
+        color,
+        size,
+      })),
+    };
+  }
+
   async getProductsByCategories() {}
 }
