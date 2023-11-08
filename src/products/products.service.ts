@@ -41,7 +41,10 @@ export class ProductsService {
       },
     });
 
-    return product;
+    return {
+      message: 'Tao san pham moi thanh cong',
+      id: product.id,
+    };
   }
 
   async deleteProduct(dto: DeleteProductDto) {
