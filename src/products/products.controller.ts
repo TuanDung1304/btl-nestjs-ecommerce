@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UsePipes,
   ValidationPipe,
@@ -29,5 +31,12 @@ export class ProductsController {
   @HttpCode(HttpStatus.OK)
   deleteProduct(@Body() dto: DeleteProductDto) {
     return this.productService.deleteProduct(dto);
+  }
+
+  @Get('/:productId')
+  @UsePipes(ValidationPipe)
+  @HttpCode(HttpStatus.OK)
+  getProductDetail(@Param() { productId }) {
+    return this.productService.getProductDetail(productId);
   }
 }
