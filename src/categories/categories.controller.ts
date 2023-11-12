@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -11,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
 import { CategoryDto } from 'src/categories/dto/category.dto';
+import { FilterDto } from 'src/categories/dto/filter.dto';
 
 @Controller('collections')
 export class CategoriesController {
@@ -23,10 +23,10 @@ export class CategoriesController {
     return this.categoriesService.createCategory(dto);
   }
 
-  @Get('/:categoryId')
+  @Post('/:categoryId')
   @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.OK)
-  getProducts(@Param() { categoryId }) {
+  getProducts(@Param() { categoryId }, @Body() filter: FilterDto) {
     if (['ao-nam', 'quan-nam', 'phu-kien'].includes(categoryId))
       return this.categoriesService.getProductsByCategoryType(
         categoryId === 'ao-nam'
@@ -34,7 +34,8 @@ export class CategoriesController {
           : categoryId === 'quan-nam'
           ? 'Quần'
           : 'Phụ Kiện',
+        filter,
       );
-    return this.categoriesService.getProductsByCategory(categoryId);
+    return this.categoriesService.getProductsByCategory(categoryId, filter);
   }
 }
