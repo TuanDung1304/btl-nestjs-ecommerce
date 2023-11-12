@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -11,6 +10,7 @@ import {
 import { AuthService } from 'src/auth/auth.service';
 import { LoginDto, SignUpDto } from 'src/auth/dto/auth.dto';
 import { LoginData, SignUpData } from 'src/auth/types/type';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -23,6 +23,7 @@ export class AuthController {
     return this.authService.signUp(dto);
   }
 
+  @Public()
   @Post('/login')
   @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.OK)
