@@ -26,39 +26,52 @@ export class CategoriesService {
   }
 
   async getProductsByCategory(categoryId: string, filter?: FilterDto) {
-    const { page, perPage } = filter;
-    const totalProducts = await this.prismaService.products.count({
-      where: { categoryId },
-    });
-    const products = await this.prismaService.products.findMany({
-      where: {
-        categoryId,
-        productModels: { some: { color: { contains: filter.color } } },
-      },
-      skip: (page - 1) * perPage,
-      take: perPage,
-      orderBy: getSortedBy(filter.sortBy),
-    });
-    return { products, totalPage: Math.ceil(totalProducts / perPage) };
-  }
+    const { page, perPage, min, max, size, color } = filter;
+    console.log(size);
+    const type =
+      categoryId === 'ao-nam'
+        ? 'Áo'
+        : categoryId === 'quan-nam'
+        ? 'Quần'
+        : categoryId === 'phu-kien'
+        ? 'Phụ Kiện'
+        : null;
 
-  async getProductsByCategoryType(
-    type: 'Áo' | 'Quần' | 'Phụ Kiện',
-    filter: FilterDto,
-  ) {
-    const { page, perPage } = filter;
+    const conditions = {
+      ...(type ? { category: { type } } : { categoryId }),
+      productModels: {
+        some: {
+          color: { contains: color },
+          ...(size ? { size: { equals: size } } : {}),
+        },
+      },
+      OR: [
+        {
+          AND: [
+            { discountedPrice: { not: { equals: null } } },
+            { discountedPrice: { lte: max } },
+            { discountedPrice: { gte: min } },
+          ],
+        },
+        {
+          AND: [
+            { discountedPrice: { equals: null } },
+            { price: { lte: max } },
+            { price: { gte: min } },
+          ],
+        },
+      ],
+    };
     const totalProducts = await this.prismaService.products.count({
       where: {
-        category: { type },
+        ...conditions,
       },
     });
     const products = await this.prismaService.products.findMany({
-      where: {
-        category: { type },
-      },
-      orderBy: getSortedBy(filter.sortBy),
+      where: conditions,
       skip: (page - 1) * perPage,
       take: perPage,
+      orderBy: getSortedBy(filter.sortBy),
     });
     return { products, totalPage: Math.ceil(totalProducts / perPage) };
   }
