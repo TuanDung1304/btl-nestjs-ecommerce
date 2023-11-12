@@ -27,7 +27,6 @@ export class CategoriesService {
 
   async getProductsByCategory(categoryId: string, filter?: FilterDto) {
     const { page, perPage, min, max, size, color } = filter;
-    console.log(size);
     const type =
       categoryId === 'ao-nam'
         ? 'Áo'

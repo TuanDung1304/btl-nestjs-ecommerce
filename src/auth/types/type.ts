@@ -10,7 +10,10 @@ export type SignUpData = {
 
 export type LoginData = {
   message: string;
-  user: Pick<Users, 'avatar' | 'firstName' | 'role' | 'email' | 'id'>;
+  user: Pick<
+    Users,
+    'avatar' | 'firstName' | 'role' | 'email' | 'id' | 'lastName'
+  >;
   tokens: {
     refreshToken: string;
     accessToken: string;
