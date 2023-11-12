@@ -45,7 +45,7 @@ export class AuthService {
     });
     if (!user) throw new ForbiddenException('Account does not exist');
 
-    const { email, password, id, role, avatar, firstName } = user;
+    const { email, password, id, role, avatar, firstName, lastName } = user;
 
     const passwordMatches = await bcrypt.compare(dto.password, password);
     if (!passwordMatches) throw new ForbiddenException('Wrong password');
@@ -67,6 +67,7 @@ export class AuthService {
         role,
         avatar,
         firstName,
+        lastName,
       },
     };
   }
