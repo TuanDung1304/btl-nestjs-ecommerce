@@ -115,7 +115,7 @@ export class AuthService {
           type === 'at'
             ? process.env.ACCESS_TOKEN_SECRET
             : process.env.REFRESH_TOKEN_SECRET,
-        expiresIn: type === 'at' ? 10 : 20,
+        expiresIn: type === 'at' ? '1h' : '1 days',
       },
     );
   }
