@@ -19,3 +19,8 @@ export type LoginData = {
     accessToken: string;
   };
 };
+
+export type RefreshTokensData = {
+  message: string;
+  accessToken: string;
+};
