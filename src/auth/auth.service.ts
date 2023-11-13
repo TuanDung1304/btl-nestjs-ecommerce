@@ -45,7 +45,7 @@ export class AuthService {
     });
     if (!user) throw new ForbiddenException('Account does not exist');
 
-    const { email, password, id, role, avatar, firstName } = user;
+    const { email, password, id, role, avatar, firstName, lastName } = user;
 
     const passwordMatches = await bcrypt.compare(dto.password, password);
     if (!passwordMatches) throw new ForbiddenException('Wrong password');
@@ -54,6 +54,9 @@ export class AuthService {
       this.getToken(id, email, 'at'),
       this.getToken(id, email, 'rt'),
     ]);
+
+    const hashRt = await this.hashData(refreshToken);
+    await this.prisma.users.update({ where: { id }, data: { hashRt } });
 
     return {
       tokens: {
@@ -67,7 +70,33 @@ export class AuthService {
         role,
         avatar,
         firstName,
+        lastName,
       },
+    };
+  }
+
+  async logout(userId: number) {
+    await this.prisma.users.update({
+      where: { id: userId },
+      data: { hashRt: null },
+    });
+
+    return { message: 'Logout successful' };
+  }
+
+  async refreshTokens(userId: number) {
+    const user = await this.prisma.users.findUnique({ where: { id: userId } });
+    if (!user) throw new ForbiddenException('User do not exist');
+
+    const { id, email } = user;
+    const [accessToken] = await Promise.all([
+      this.getToken(id, email, 'at'),
+      this.getToken(id, email, 'rt'),
+    ]);
+
+    return {
+      accessToken,
+      message: 'Refresh tokens successful',
     };
   }
 
@@ -86,7 +115,7 @@ export class AuthService {
           type === 'at'
             ? process.env.ACCESS_TOKEN_SECRET
             : process.env.REFRESH_TOKEN_SECRET,
-        expiresIn: type === 'at' ? 600 : 3600,
+        expiresIn: type === 'at' ? 10 : 20,
       },
     );
   }

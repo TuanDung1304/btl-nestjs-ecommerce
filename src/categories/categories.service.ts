@@ -1,5 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CategoryDto } from 'src/categories/dto/category.dto';
+import { FilterDto } from 'src/categories/dto/filter.dto';
+import { getSortedBy } from 'src/categories/functions';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -23,24 +25,53 @@ export class CategoriesService {
     };
   }
 
-  async getProductsByCategory(categoryId: string) {
-    const category = await this.prismaService.categories.findUnique({
-      where: { id: categoryId },
-      include: { products: true },
+  async getProductsByCategory(categoryId: string, filter?: FilterDto) {
+    const { page, perPage, min, max, size, color } = filter;
+    const type =
+      categoryId === 'ao-nam'
+        ? 'Áo'
+        : categoryId === 'quan-nam'
+        ? 'Quần'
+        : categoryId === 'phu-kien'
+        ? 'Phụ Kiện'
+        : null;
+
+    const conditions = {
+      ...(type ? { category: { type } } : { categoryId }),
+      productModels: {
+        some: {
+          color: { contains: color },
+          ...(size ? { size: { equals: size } } : {}),
+        },
+      },
+      OR: [
+        {
+          AND: [
+            { discountedPrice: { not: { equals: null } } },
+            { discountedPrice: { lte: max } },
+            { discountedPrice: { gte: min } },
+          ],
+        },
+        {
+          AND: [
+            { discountedPrice: { equals: null } },
+            { price: { lte: max } },
+            { price: { gte: min } },
+          ],
+        },
+      ],
+    };
+    const totalProducts = await this.prismaService.products.count({
+      where: {
+        ...conditions,
+      },
     });
-
-    return category?.products ?? [];
-  }
-  async getProductsByCategoryType(type: 'Áo' | 'Quần' | 'Phụ Kiện') {
-    const categories = await this.prismaService.categories.findMany({
-      where: { type },
-      include: { products: true },
+    const products = await this.prismaService.products.findMany({
+      where: conditions,
+      skip: (page - 1) * perPage,
+      take: perPage,
+      orderBy: getSortedBy(filter.sortBy),
     });
-
-    const products = categories.reduce((acc, category) => {
-      return acc.concat(category.products);
-    }, []);
-
-    return products;
+    return { products, totalPage: Math.ceil(totalProducts / perPage) };
   }
 }

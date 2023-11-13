@@ -5,28 +5,46 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  UsePipes,
-  ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginDto, SignUpDto } from 'src/auth/dto/auth.dto';
-import { LoginData, SignUpData } from 'src/auth/types/type';
+import { LoginData, RefreshTokensData, SignUpData } from 'src/auth/types/type';
+import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
+import { RtGuard } from 'src/common/guards/rt.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('/signup')
-  @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.CREATED)
   signup(@Body() dto: SignUpDto): Promise<SignUpData> {
     return this.authService.signUp(dto);
   }
 
+  @Public()
   @Post('/login')
-  @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto): Promise<LoginData> {
     return this.authService.login(dto);
+  }
+
+  @Get('/logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@GetCurrentUser('sub') userId: number) {
+    return this.authService.logout(userId);
+  }
+
+  @Public()
+  @UseGuards(RtGuard)
+  @Get('/refresh')
+  @HttpCode(HttpStatus.OK)
+  refreshTokens(
+    @GetCurrentUser('sub') userId: number,
+  ): Promise<RefreshTokensData> {
+    return this.authService.refreshTokens(userId);
   }
 }
