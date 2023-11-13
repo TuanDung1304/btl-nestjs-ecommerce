@@ -20,6 +20,7 @@ model Users {
   role      Int       @default(1)
   createdAt DateTime  @default(now())
   updatedAt DateTime?
+  hashRt    String?
 
   @@map("users")
 }

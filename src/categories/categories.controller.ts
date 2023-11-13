@@ -5,8 +5,6 @@ import {
   HttpStatus,
   Param,
   Post,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
 import { CategoryDto } from 'src/categories/dto/category.dto';
@@ -17,14 +15,12 @@ export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @Post('/create')
-  @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.CREATED)
   create(@Body() dto: CategoryDto) {
     return this.categoriesService.createCategory(dto);
   }
 
   @Post('/:categoryId')
-  @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.OK)
   getProducts(@Param() { categoryId }, @Body() filter: FilterDto) {
     return this.categoriesService.getProductsByCategory(categoryId, filter);

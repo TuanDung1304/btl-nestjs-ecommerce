@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
-import { GetCurrentUserId } from 'src/common/decorators/userid.decorator';
+import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
 import { UsersService } from 'src/user/users.service';
 
 @Controller('users')
@@ -8,7 +8,7 @@ export class UsersController {
 
   @Get('/profile')
   @HttpCode(HttpStatus.OK)
-  getProfile(@GetCurrentUserId() userId: number) {
+  getProfile(@GetCurrentUser('sub') userId: number) {
     return this.usersService.getUserInfo(userId);
   }
 }
