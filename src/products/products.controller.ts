@@ -29,6 +29,12 @@ export class ProductsController {
     return this.productService.deleteProduct(dto);
   }
 
+  @Get('/listProducts')
+  @HttpCode(HttpStatus.OK)
+  getProducts() {
+    return this.productService.getListProducts();
+  }
+
   @Get('/:productId')
   @HttpCode(HttpStatus.OK)
   getProductDetail(@Param() { productId }) {
