@@ -4,6 +4,7 @@ import { LoginData, SignUpData } from 'src/auth/types/type';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -51,8 +52,8 @@ export class AuthService {
     if (!passwordMatches) throw new ForbiddenException('Wrong password');
 
     const [accessToken, refreshToken] = await Promise.all([
-      this.getToken(id, email, 'at'),
-      this.getToken(id, email, 'rt'),
+      this.getToken(id, email, role, 'at'),
+      this.getToken(id, email, role, 'rt'),
     ]);
 
     const hashRt = await this.hashData(refreshToken);
@@ -88,10 +89,10 @@ export class AuthService {
     const user = await this.prisma.users.findUnique({ where: { id: userId } });
     if (!user) throw new ForbiddenException('User do not exist');
 
-    const { id, email } = user;
+    const { id, email, role } = user;
     const [accessToken] = await Promise.all([
-      this.getToken(id, email, 'at'),
-      this.getToken(id, email, 'rt'),
+      this.getToken(id, email, role, 'at'),
+      this.getToken(id, email, role, 'rt'),
     ]);
 
     return {
@@ -104,10 +105,11 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  async getToken(userId: number, email: string, type: 'at' | 'rt') {
+  async getToken(userId: number, email: string, role: Role, type: 'at' | 'rt') {
     return await this.jwtService.signAsync(
       {
         sub: userId,
+        role,
         email,
       },
       {
