@@ -14,9 +14,17 @@ class ImageDto {
   @IsString()
   @IsNotEmpty()
   url: string;
+
+  @IsNumber()
+  @IsOptional()
+  id: number;
 }
 
 class ProductModelDto {
+  @IsNumber()
+  @IsOptional()
+  id?: number;
+
   @IsNotEmpty()
   @IsString()
   size: string;

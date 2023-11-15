@@ -11,6 +11,7 @@ import {
   CreateProductDto,
   DeleteProductDto,
 } from 'src/products/dto/product.dto';
+import { UpdateProductDto } from 'src/products/dto/updateProduct.dto';
 import { ProductsService } from 'src/products/products.service';
 
 @Controller('products')
@@ -39,5 +40,11 @@ export class ProductsController {
   @HttpCode(HttpStatus.OK)
   getProductDetail(@Param() { productId }) {
     return this.productService.getProductDetail(productId);
+  }
+
+  @Post('/edit/:productId')
+  @HttpCode(HttpStatus.OK)
+  updateProduct(@Body() dto: UpdateProductDto, @Param() { productId }) {
+    return this.productService.updateProduct(dto, Number(productId));
   }
 }
