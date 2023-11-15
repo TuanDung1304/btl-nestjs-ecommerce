@@ -28,13 +28,34 @@ enum COLORS {
   TrangKem = 'Trắng kem',
 }
 
-const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
 
 const prisma = new PrismaClient();
 
 async function main() {
   // user-------------------------------
   const usersData: Prisma.UsersCreateManyInput[] = [];
+  usersData.push({
+    email: 'admin@gmail.com',
+    firstName: 'Tuan Dung',
+    lastName: 'Nguyen',
+    password: await bcrypt.hash('123456', 10),
+    avatar: faker.internet.avatar(),
+    phone: '0383338589',
+    address: 'Cau Giay',
+    birthday: new Date('2001-04-13'),
+    role: 'Admin',
+  });
+  usersData.push({
+    email: 'tuandung@gmail.com',
+    firstName: 'Tuan Dung',
+    lastName: 'Nguyen',
+    password: await bcrypt.hash('123456', 10),
+    avatar: faker.internet.avatar(),
+    phone: '0393336189',
+    address: 'Cau Giay',
+    birthday: new Date('2001-04-13'),
+  });
   for (let i = 0; i < 20; i++) {
     usersData.push({
       email: faker.internet.email(),
@@ -67,7 +88,6 @@ async function main() {
       { name: 'Quần Kaki', id: 'quan-kaki', type: 'Quần' },
       { name: 'Quần Đùi', id: 'quan-gio', type: 'Quần' },
       { name: 'Giày', id: 'giay', type: 'Phụ Kiện' },
-      { name: 'Dây Lưng', id: 'day-lung', type: 'Phụ Kiện' },
       { name: 'Ví', id: 'vi', type: 'Phụ Kiện' },
     ],
   });
@@ -100,8 +120,8 @@ async function main() {
       ...fakeProductModels(105, [COLORS.Den, COLORS.Trang]),
       ...fakeProductModels(106, [COLORS.Xam, COLORS.Xanh]),
       ...fakeProductModels(107, [COLORS.Den]),
-      ...fakeProductModels(107, [COLORS.Xanh]),
-      ...fakeProductModels(107, [COLORS.Xanh, COLORS.Xam]),
+      ...fakeProductModels(108, [COLORS.Xanh]),
+      ...fakeProductModels(109, [COLORS.Xanh, COLORS.Xam]),
     ],
   });
 }
@@ -273,14 +293,12 @@ const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
     'https://product.hstatic.net/200000690725/product/estp041-13_052acb199d294321a1158807cea0d5b4_master.jpg',
     'https://product.hstatic.net/200000690725/product/estp041-14_c216ec36194c4f7da5d099aff22b8316_master.jpg',
   ]),
-  //---------------------
   ...fakeImages(102, [
     'https://product.hstatic.net/200000690725/product/5_66590d1cba6041359e8a89a1c7e0feb5_master.jpg',
     'https://product.hstatic.net/200000690725/product/1_eaabf57d435740af8ed20d6f40378045_master.jpg',
     'https://product.hstatic.net/200000690725/product/2_25c38d6c27394c258025535e2bc9d5bd_master.jpg',
     'https://product.hstatic.net/200000690725/product/6_e4d2cb26997d464985a485cc7f212599_master.jpg',
   ]),
-  //---------------------
   ...fakeImages(103, [
     'https://product.hstatic.net/200000690725/product/1_50f16dbd5df34aa3acc99865b4820084_master.jpg',
     'https://product.hstatic.net/200000690725/product/2_5933a603e4074662bfe7cc6b5fe1e44b_master.jpg',
@@ -288,7 +306,6 @@ const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
     'https://product.hstatic.net/200000690725/product/5_5bf4a94b5b19485199441c580dae0f6a_master.jpg',
     'https://product.hstatic.net/200000690725/product/7_e37142ddf18d4daa898aac91aa82eb92_master.jpg',
   ]),
-  //---------------------
   ...fakeImages(104, [
     'https://product.hstatic.net/200000053174/product/3_5017e12e8b1b4538bbaa237b2da4b53f_master.jpg',
     'https://product.hstatic.net/200000053174/product/4_9404263f5acb435b92cd27578f61f229_master.jpg',
@@ -296,7 +313,6 @@ const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
     'https://product.hstatic.net/200000053174/product/2_53388940b8174a688e1ddd934dbe9002_master.jpg',
     'https://product.hstatic.net/200000053174/product/4_75d035c1bb754e6e9014652e8f77d0b4_master.jpg',
   ]),
-  //---------------------
   ...fakeImages(105, [
     'https://product.hstatic.net/200000053174/product/9_1c4095155f7f43518734fd1aa5c8e676_master.png',
     'https://product.hstatic.net/200000053174/product/10_9c2737c21fd74e3c8b067557e6841521_master.png',
@@ -304,7 +320,6 @@ const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
     'https://product.hstatic.net/200000053174/product/3_d0e0cd51a27848f59335c219b130d556_master.jpg',
     'https://product.hstatic.net/200000053174/product/5_9c5440ad7aa24ec49df029051977121f_master.jpg',
   ]),
-  //---------------------
   ...fakeImages(106, [
     'https://product.hstatic.net/200000053174/product/5_bf05f79952a446788bd4d8574ea672ee_master.png',
     'https://product.hstatic.net/200000053174/product/6_afe399af00a7441ba01c615fefd7095b_master.png',
