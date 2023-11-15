@@ -30,112 +30,6 @@ enum COLORS {
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
 
-const prisma = new PrismaClient();
-
-async function main() {
-  // user-------------------------------
-  const usersData: Prisma.UsersCreateManyInput[] = [];
-  usersData.push({
-    email: 'admin@gmail.com',
-    firstName: 'Tuan Dung',
-    lastName: 'Nguyen',
-    password: await bcrypt.hash('123456', 10),
-    avatar: faker.internet.avatar(),
-    phone: '0383338589',
-    address: 'Cau Giay',
-    birthday: new Date('2001-04-13'),
-    role: 'Admin',
-  });
-  usersData.push({
-    email: 'tuandung@gmail.com',
-    firstName: 'Tuan Dung',
-    lastName: 'Nguyen',
-    password: await bcrypt.hash('123456', 10),
-    avatar: faker.internet.avatar(),
-    phone: '0393336189',
-    address: 'Cau Giay',
-    birthday: new Date('2001-04-13'),
-  });
-  for (let i = 0; i < 20; i++) {
-    usersData.push({
-      email: faker.internet.email(),
-      firstName: faker.person.firstName(),
-      lastName: faker.person.lastName(),
-      password: await bcrypt.hash('seeding', 10),
-      avatar: faker.internet.avatar(),
-      phone: faker.phone.number(),
-      address: faker.location.streetAddress(),
-      birthday: faker.date.birthdate(),
-    });
-  }
-  await prisma.users.createMany({
-    skipDuplicates: true,
-    data: usersData,
-  });
-
-  // categories-------------------------------
-  await prisma.categories.createMany({
-    skipDuplicates: true,
-    data: [
-      { name: 'Áo Polo', id: 'ao-polo', type: 'Áo' },
-      { name: 'Áo Sơ Mi', id: 'ao-so-mi', type: 'Áo' },
-      { name: 'Áo Khoác', id: 'ao-khoac', type: 'Áo' },
-      { name: 'Áo Phông', id: 'ao-phong', type: 'Áo' },
-      { name: 'Áo Len', id: 'ao-len', type: 'Áo' },
-      { name: 'Áo Vest', id: 'ao-vest', type: 'Áo' },
-      { name: 'Quần Jean', id: 'quan-jean', type: 'Quần' },
-      { name: 'Quần Tây', id: 'quan-tay', type: 'Quần' },
-      { name: 'Quần Kaki', id: 'quan-kaki', type: 'Quần' },
-      { name: 'Quần Đùi', id: 'quan-gio', type: 'Quần' },
-      { name: 'Giày', id: 'giay', type: 'Phụ Kiện' },
-      { name: 'Ví', id: 'vi', type: 'Phụ Kiện' },
-    ],
-  });
-
-  // products
-  await prisma.products.createMany({
-    skipDuplicates: true,
-    data: [...AO_POLO, ...AO_SOMI],
-  });
-
-  //images
-  await prisma.images.createMany({
-    skipDuplicates: true,
-    data: IMAGES,
-  });
-
-  // product models
-  await prisma.productModels.createMany({
-    skipDuplicates: true,
-    data: [
-      ...fakeProductModels(101, [
-        COLORS.Trang,
-        COLORS.TrangKem,
-        COLORS.Den,
-        COLORS.XanhThan,
-      ]),
-      ...fakeProductModels(102, [COLORS.Den, COLORS.TrangKem]),
-      ...fakeProductModels(103, [COLORS.Den, COLORS.TrangKem]),
-      ...fakeProductModels(104, [COLORS.Den, COLORS.Trang]),
-      ...fakeProductModels(105, [COLORS.Den, COLORS.Trang]),
-      ...fakeProductModels(106, [COLORS.Xam, COLORS.Xanh]),
-      ...fakeProductModels(107, [COLORS.Den]),
-      ...fakeProductModels(108, [COLORS.Xanh]),
-      ...fakeProductModels(109, [COLORS.Xanh, COLORS.Xam]),
-    ],
-  });
-}
-
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
-
 function getRandomColors(): string[] {
   // lay ngau nhien 3-6 mau ngau nhien
   const count = Math.floor(Math.random() * 4) + 3;
@@ -169,11 +63,11 @@ function getRandomSizes(): string[] {
 
 const fakeProductModels = (productId: number, colors?: string[]): Model[] => {
   return getRandomSizes().reduce<Model[]>((acc, size) => {
-    // random so luong 0 - 100
+    // random so luong 0 - 20
     return [
       ...acc,
       ...(colors ?? getRandomColors()).map((color) => {
-        const quantity = Math.floor(Math.random() * 100);
+        const quantity = Math.floor(Math.random() * 20);
         return { color, size, quantity, productId };
       }),
     ];
@@ -187,7 +81,7 @@ const fakeImages = (
   return images.map((image) => ({ productId, url: image }));
 };
 
-// PRODUCT MODELS =============================
+// PRODUCT =============================
 const AO_POLO: Product[] = [
   // ao polo
   {
@@ -283,7 +177,7 @@ const AO_SOMI: Product[] = [
   },
 ];
 
-// IMAGES =======================
+// IMAGES ==========================
 const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
   ...fakeImages(101, [
     'https://product.hstatic.net/200000690725/product/estp041-16_4cb9d42d84e7436884bd3f4e648621ed_master.jpg',
@@ -348,3 +242,110 @@ const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
     'https://product.hstatic.net/200000053174/product/6_edaf7bf755494b588a8288de10bd20db_master.jpg',
   ]),
 ];
+
+// MODELS ========================
+const MODELS = [
+  ...fakeProductModels(101, [COLORS.Trang, COLORS.TrangKem, COLORS.Den]),
+  ...fakeProductModels(102, [COLORS.Den, COLORS.TrangKem]),
+  ...fakeProductModels(103, [COLORS.Den, COLORS.TrangKem]),
+  ...fakeProductModels(104, [COLORS.Den, COLORS.Trang]),
+  ...fakeProductModels(105, [COLORS.Den, COLORS.Trang]),
+  ...fakeProductModels(106, [COLORS.Xam, COLORS.Xanh]),
+  ...fakeProductModels(107, [COLORS.Den]),
+  ...fakeProductModels(108, [COLORS.Xanh]),
+  ...fakeProductModels(109, [COLORS.Xanh, COLORS.Xam]),
+];
+
+/**
+ Prisma ======================================
+ */
+const prisma = new PrismaClient();
+
+async function main() {
+  // user-------------------------------
+  const usersData: Prisma.UsersCreateManyInput[] = [];
+  usersData.push({
+    email: 'admin@gmail.com',
+    firstName: 'Tuan Dung',
+    lastName: 'Nguyen',
+    password: await bcrypt.hash('123456', 10),
+    avatar: faker.internet.avatar(),
+    phone: '0383338589',
+    address: 'Cau Giay',
+    birthday: new Date('2001-04-13'),
+    role: 'Admin',
+  });
+  usersData.push({
+    email: 'tuandung@gmail.com',
+    firstName: 'Tuan Dung',
+    lastName: 'Nguyen',
+    password: await bcrypt.hash('123456', 10),
+    avatar: faker.internet.avatar(),
+    phone: '0393336189',
+    address: 'Cau Giay',
+    birthday: new Date('2001-04-13'),
+  });
+  for (let i = 0; i < 20; i++) {
+    usersData.push({
+      email: faker.internet.email(),
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      password: await bcrypt.hash('seeding', 10),
+      avatar: faker.internet.avatar(),
+      phone: faker.phone.number(),
+      address: faker.location.streetAddress(),
+      birthday: faker.date.birthdate(),
+    });
+  }
+  await prisma.users.createMany({
+    skipDuplicates: true,
+    data: usersData,
+  });
+
+  // categories-------------------------------
+  await prisma.categories.createMany({
+    skipDuplicates: true,
+    data: [
+      { name: 'Áo Polo', id: 'ao-polo', type: 'Áo' },
+      { name: 'Áo Sơ Mi', id: 'ao-so-mi', type: 'Áo' },
+      { name: 'Áo Khoác', id: 'ao-khoac', type: 'Áo' },
+      { name: 'Áo Phông', id: 'ao-phong', type: 'Áo' },
+      { name: 'Áo Len', id: 'ao-len', type: 'Áo' },
+      { name: 'Áo Vest', id: 'ao-vest', type: 'Áo' },
+      { name: 'Quần Jean', id: 'quan-jean', type: 'Quần' },
+      { name: 'Quần Tây', id: 'quan-tay', type: 'Quần' },
+      { name: 'Quần Kaki', id: 'quan-kaki', type: 'Quần' },
+      { name: 'Quần Đùi', id: 'quan-gio', type: 'Quần' },
+      { name: 'Giày', id: 'giay', type: 'Phụ Kiện' },
+      { name: 'Ví', id: 'vi', type: 'Phụ Kiện' },
+    ],
+  });
+
+  // products-------------------------------
+  await prisma.products.createMany({
+    skipDuplicates: true,
+    data: [...AO_POLO, ...AO_SOMI],
+  });
+
+  //images-------------------------------
+  await prisma.images.createMany({
+    skipDuplicates: true,
+    data: IMAGES,
+  });
+
+  // product models----------------------
+  await prisma.productModels.createMany({
+    skipDuplicates: true,
+    data: MODELS,
+  });
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
