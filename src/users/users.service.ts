@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ListUsersData } from 'src/users/types';
 
 @Injectable()
 export class UsersService {
@@ -12,5 +13,11 @@ export class UsersService {
     const { createdAt, updatedAt, password, ...resData } = user;
 
     return resData;
+  }
+
+  async getListUsers(): Promise<ListUsersData[]> {
+    const users = await this.prismaService.users.findMany();
+
+    return users.map(({ hashRt, updatedAt, password, ...rest }) => rest);
   }
 }

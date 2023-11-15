@@ -4,6 +4,7 @@ import {
   CreateProductDto,
   DeleteProductDto,
 } from 'src/products/dto/product.dto';
+import { ListProductsData } from 'src/products/types';
 
 @Injectable()
 export class ProductsService {
@@ -67,6 +68,22 @@ export class ProductsService {
     return {
       message: 'Delete product successfully',
     };
+  }
+
+  async getListProducts(): Promise<ListProductsData[]> {
+    const products = await this.prisma.products.findMany({
+      include: { productModels: { select: { quantity: true } } },
+    });
+
+    return products.map(
+      ({ updatedAt, description, productModels, ...rest }) => ({
+        ...rest,
+        modelsCount: productModels.length,
+        inStock: productModels.reduce((acc, model) => {
+          return acc + model.quantity;
+        }, 0),
+      }),
+    );
   }
 
   async getProductDetail(productId: number) {

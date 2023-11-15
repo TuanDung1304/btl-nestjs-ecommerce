@@ -3,7 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
-import { UsersModule } from 'src/user/users.module';
+import { UsersModule } from 'src/users/users.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AtGuard } from 'src/common/guards/at.guard';
 import { JwtModule } from '@nestjs/jwt';

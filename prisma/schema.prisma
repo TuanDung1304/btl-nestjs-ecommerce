@@ -17,12 +17,17 @@ model Users {
   address   String?
   avatar    String?
   birthday  DateTime?
-  role      Int       @default(1)
+  role      Role      @default(User)
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   hashRt    String?
 
   @@map("users")
+}
+
+enum Role {
+  Admin
+  User
 }
 
 model Products {
