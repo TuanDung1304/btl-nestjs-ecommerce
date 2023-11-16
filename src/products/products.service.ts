@@ -13,13 +13,13 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   async createProduct(dto: CreateProductDto) {
-    const category = await this.prisma.categories.findUnique({
+    const category = await this.prisma.category.findUnique({
       where: { id: dto.categoryId },
     });
     if (!category) {
       throw new ForbiddenException('Category not found');
     }
-    const product = await this.prisma.products.create({
+    const product = await this.prisma.product.create({
       data: {
         name: dto.name,
         price: dto.price,
@@ -51,7 +51,7 @@ export class ProductsService {
   }
 
   async deleteProduct(dto: DeleteProductDto) {
-    const product = await this.prisma.products.findUnique({
+    const product = await this.prisma.product.findUnique({
       where: { id: dto.id },
     });
     if (!product) {
@@ -59,11 +59,11 @@ export class ProductsService {
     }
 
     await this.prisma.images.deleteMany({ where: { productId: dto.id } });
-    await this.prisma.productModels.deleteMany({
+    await this.prisma.productModel.deleteMany({
       where: { productId: dto.id },
     });
 
-    await this.prisma.products.delete({
+    await this.prisma.product.delete({
       where: { id: dto.id },
     });
 
@@ -73,7 +73,7 @@ export class ProductsService {
   }
 
   async getListProducts(): Promise<ListProductsData[]> {
-    const products = await this.prisma.products.findMany({
+    const products = await this.prisma.product.findMany({
       orderBy: { id: 'asc' },
       include: { productModels: { select: { quantity: true } } },
     });
@@ -90,7 +90,7 @@ export class ProductsService {
   }
 
   async getProductDetail(productId: number) {
-    const product = await this.prisma.products.findUnique({
+    const product = await this.prisma.product.findUnique({
       where: { id: Number(productId) },
       include: {
         productModels: true,
@@ -134,7 +134,7 @@ export class ProductsService {
   async updateProduct(dto: UpdateProductDto, productId: number) {
     const { productModels, images, categoryId, ...rest } = dto;
 
-    const category = await this.prisma.categories.findUnique({
+    const category = await this.prisma.category.findUnique({
       where: { id: dto.categoryId },
     });
     if (!category) {
@@ -148,7 +148,7 @@ export class ProductsService {
         id: { notIn: compact(images.map((item) => item.id)) },
       },
     });
-    const deletedModels = await this.prisma.productModels.deleteMany({
+    const deletedModels = await this.prisma.productModel.deleteMany({
       where: {
         productId,
         id: { notIn: compact(productModels.map((item) => item.id)) },
@@ -158,7 +158,7 @@ export class ProductsService {
     // upsert many
     await this.prisma.$transaction(
       productModels.map((model) =>
-        this.prisma.productModels.upsert({
+        this.prisma.productModel.upsert({
           where: { productId, id: model.id ?? 0 },
           create: {
             productId,
@@ -171,7 +171,7 @@ export class ProductsService {
       ),
     );
 
-    const updatedProduct = await this.prisma.products.update({
+    const updatedProduct = await this.prisma.product.update({
       where: { id: productId },
       data: {
         ...rest,

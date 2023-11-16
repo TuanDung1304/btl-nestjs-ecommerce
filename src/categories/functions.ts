@@ -1,8 +1,8 @@
-import { Products } from '@prisma/client';
+import { Product } from '@prisma/client';
 
 export function getSortedBy(
   sortBy: 'default' | 'newest' | 'asc' | 'desc',
-): Partial<Record<keyof Products, 'asc' | 'desc'>> {
+): Partial<Record<keyof Product, 'asc' | 'desc'>> {
   switch (sortBy) {
     case 'newest':
       return { createdAt: 'asc' };

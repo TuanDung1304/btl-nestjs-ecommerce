@@ -7,7 +7,7 @@ export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
   async getUserInfo(userId: number) {
-    const user = await this.prismaService.users.findUnique({
+    const user = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
     const { createdAt, updatedAt, password, ...resData } = user;
@@ -16,7 +16,7 @@ export class UsersService {
   }
 
   async getListUsers(): Promise<ListUsersData[]> {
-    const users = await this.prismaService.users.findMany();
+    const users = await this.prismaService.user.findMany();
 
     return users.map(({ hashRt, updatedAt, password, ...rest }) => rest);
   }
