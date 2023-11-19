@@ -35,7 +35,7 @@ export class CartsService {
   }
 
   async getCart(userId: number) {
-    const cart = await this.prismaService.cartItem.findMany({
+    const cartItems = await this.prismaService.cartItem.findMany({
       where: { userId, orderId: null },
       select: {
         id: true,
@@ -59,9 +59,24 @@ export class CartsService {
         },
       },
     });
+    const { totalItem, totalPrice } = cartItems.reduce(
+      (acc, item) => {
+        return {
+          totalPrice:
+            acc.totalPrice + item.quantity * item.productModel.product.price,
+          totalItem: acc.totalItem + item.quantity,
+        };
+      },
+      {
+        totalPrice: 0,
+        totalItem: 0,
+      },
+    );
 
     return {
-      cartItems: cart,
+      cartItems,
+      totalPrice,
+      totalItem,
     };
   }
 }
