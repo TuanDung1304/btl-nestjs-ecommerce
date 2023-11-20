@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { CartsService } from 'src/carts/carts.service';
 import { AddCartDto } from 'src/carts/dtos/addCart.dto';
+import { AdjustQuantityDto } from 'src/carts/dtos/adjustQuantity.dto';
 import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
 
 @Controller('carts')
@@ -24,5 +25,14 @@ export class CartsController {
   @HttpCode(HttpStatus.OK)
   getCart(@GetCurrentUser('sub') userId: number) {
     return this.cartsService.getCart(userId);
+  }
+
+  @Post('/update')
+  @HttpCode(HttpStatus.OK)
+  adjustQuantity(
+    @GetCurrentUser('sub') userId: number,
+    @Body() dto: AdjustQuantityDto,
+  ) {
+    return this.cartsService.adjustQuantity(userId, dto);
   }
 }

@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { AddCartDto } from 'src/carts/dtos/addCart.dto';
+import { AdjustQuantityDto } from 'src/carts/dtos/adjustQuantity.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -7,7 +8,6 @@ export class CartsService {
   constructor(private prismaService: PrismaService) {}
 
   async addCartItem(dto: AddCartDto, userId: number) {
-    console.log(dto);
     const model = await this.prismaService.productModel.findUnique({
       where: { id: dto.modelId },
     });
@@ -77,6 +77,19 @@ export class CartsService {
       cartItems,
       totalPrice,
       totalItem,
+    };
+  }
+
+  async adjustQuantity(userId: number, dto: AdjustQuantityDto) {
+    const newCart = await this.prismaService.cartItem.update({
+      where: { id: dto.cartItemId, userId },
+      data: {
+        quantity: dto.quantity,
+      },
+    });
+    return {
+      message: 'Update quantity successfully',
+      quantity: newCart.quantity,
     };
   }
 }
