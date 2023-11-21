@@ -10,9 +10,13 @@ export class UsersService {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
-    const { createdAt, updatedAt, password, ...resData } = user;
+    const { createdAt, updatedAt, password, hashRt, ...resData } = user;
+    const cartItems = await this.prismaService.cartItem.findMany({
+      where: { userId, orderId: null },
+    });
+    const count = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
-    return resData;
+    return { ...resData, cartQuantity: count };
   }
 
   async getListUsers(): Promise<ListUsersData[]> {

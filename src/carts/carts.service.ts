@@ -63,7 +63,10 @@ export class CartsService {
       (acc, item) => {
         return {
           totalPrice:
-            acc.totalPrice + item.quantity * item.productModel.product.price,
+            acc.totalPrice +
+            item.quantity *
+              (item.productModel.product.discountedPrice ??
+                item.productModel.product.price),
           totalItem: acc.totalItem + item.quantity,
         };
       },
@@ -81,6 +84,17 @@ export class CartsService {
   }
 
   async adjustQuantity(userId: number, dto: AdjustQuantityDto) {
+    if (dto.quantity === 0) {
+      await this.prismaService.cartItem.delete({
+        where: {
+          id: dto.cartItemId,
+          userId,
+        },
+      });
+      return {
+        message: 'Delete successfully',
+      };
+    }
     const newCart = await this.prismaService.cartItem.update({
       where: { id: dto.cartItemId, userId },
       data: {
