@@ -7,9 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
+enum Role {
+  Admin
+  User
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
   password  String
   firstName String
   lastName  String
@@ -17,56 +22,54 @@ model Users {
   address   String?
   avatar    String?
   birthday  DateTime?
-  role      Role      @default(User)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
+  role      Role       @default(User)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   hashRt    String?
+  cartItems CartItem[]
+  orders    Order[]
 
   @@map("users")
 }
 
-enum Role {
-  Admin
-  User
-}
-
-model Products {
-  id              Int             @id @default(autoincrement())
+model Product {
+  id              Int            @id @default(autoincrement())
   name            String
   description     String?
   categoryId      String
   price           Float
   thumbnail       String
   discountedPrice Float?
-  productModels   ProductModels[]
+  productModels   ProductModel[]
   images          Images[]
-  category        Categories      @relation(fields: [categoryId], references: [id])
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  category        Category       @relation(fields: [categoryId], references: [id])
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 
   @@map("products")
 }
 
-model ProductModels {
-  id        Int      @id @default(autoincrement())
+model ProductModel {
+  id        Int        @id @default(autoincrement())
   productId Int
   color     String
   size      String
   quantity  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  product   Products @relation(fields: [productId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  product   Product    @relation(fields: [productId], references: [id])
+  cartItems CartItem[]
 
   @@map("product_models")
 }
 
-model Categories {
-  id        String     @id //ao-vest
-  name      String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model Category {
+  id        String    @id //ao-vest
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   type      String
-  products  Products[]
+  products  Product[]
 
   @@map("categories")
 }
@@ -77,7 +80,43 @@ model Images {
   productId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  product   Products @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 
   @@map("images")
+}
+
+model CartItem {
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  productModelId Int
+  orderId        Int?
+  user           User         @relation(fields: [userId], references: [id])
+  order          Order?       @relation(fields: [orderId], references: [id])
+  productModel   ProductModel @relation(fields: [productModelId], references: [id])
+  quantity       Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([userId, productModelId])
+  @@map("cart_items")
+}
+
+enum OrderStatus {
+  Pending
+  Delivering
+  Completed
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  cartItems  CartItem[]
+  status     OrderStatus @default(Pending)
+  location   String
+  totalPrice Float
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id])
+
+  @@map("orders")
 }

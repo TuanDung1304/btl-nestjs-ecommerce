@@ -14,7 +14,7 @@ export class AuthService {
   ) {}
 
   async signUp(dto: SignUpDto): Promise<SignUpData> {
-    const user = await this.prisma.users.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
     if (user) throw new ForbiddenException('Email already in use');
@@ -25,7 +25,7 @@ export class AuthService {
 
     const hashedPassword = await this.hashData(dto.password);
 
-    const newUser = await this.prisma.users.create({
+    const newUser = await this.prisma.user.create({
       data: {
         email: dto.email,
         password: hashedPassword,
@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   async login(dto: LoginDto): Promise<LoginData> {
-    const user = await this.prisma.users.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
     if (!user) throw new ForbiddenException('Account does not exist');
@@ -57,7 +57,7 @@ export class AuthService {
     ]);
 
     const hashRt = await this.hashData(refreshToken);
-    await this.prisma.users.update({ where: { id }, data: { hashRt } });
+    await this.prisma.user.update({ where: { id }, data: { hashRt } });
 
     return {
       tokens: {
@@ -77,7 +77,7 @@ export class AuthService {
   }
 
   async logout(userId: number) {
-    await this.prisma.users.update({
+    await this.prisma.user.update({
       where: { id: userId },
       data: { hashRt: null },
     });
@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   async refreshTokens(userId: number) {
-    const user = await this.prisma.users.findUnique({ where: { id: userId } });
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) throw new ForbiddenException('User do not exist');
 
     const { id, email, role } = user;

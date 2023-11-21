@@ -9,13 +9,13 @@ export class CategoriesService {
   constructor(private prismaService: PrismaService) {}
 
   async createCategory(dto: CategoryDto) {
-    const category = await this.prismaService.categories.findUnique({
+    const category = await this.prismaService.category.findUnique({
       where: { id: dto.id },
     });
     if (category) {
       throw new ForbiddenException('Category already exists');
     }
-    const newCategory = await this.prismaService.categories.create({
+    const newCategory = await this.prismaService.category.create({
       data: { id: dto.id, name: dto.name, type: dto.type },
     });
 
@@ -61,12 +61,12 @@ export class CategoriesService {
         },
       ],
     };
-    const totalProducts = await this.prismaService.products.count({
+    const totalProducts = await this.prismaService.product.count({
       where: {
         ...conditions,
       },
     });
-    const products = await this.prismaService.products.findMany({
+    const products = await this.prismaService.product.findMany({
       where: conditions,
       skip: (page - 1) * perPage,
       take: perPage,

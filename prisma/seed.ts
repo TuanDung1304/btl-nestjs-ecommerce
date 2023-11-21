@@ -3,14 +3,14 @@ import {
   Images,
   Prisma,
   PrismaClient,
-  ProductModels,
-  Products,
+  ProductModel,
+  Product,
 } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 
-type Model = Pick<ProductModels, 'color' | 'productId' | 'quantity' | 'size'>;
-type Product = Pick<
-  Products,
+type Model = Pick<ProductModel, 'color' | 'productId' | 'quantity' | 'size'>;
+type IProduct = Pick<
+  Product,
   'id' | 'categoryId' | 'price' | 'name' | 'thumbnail'
 > & { description?: string; discountedPrice?: number };
 
@@ -82,7 +82,7 @@ const fakeImages = (
 };
 
 // PRODUCT =============================
-const AO_POLO: Product[] = [
+const AO_POLO: IProduct[] = [
   // ao polo
   {
     id: 101,
@@ -136,7 +136,7 @@ const AO_POLO: Product[] = [
   },
 ];
 
-const AO_SOMI: Product[] = [
+const AO_SOMI: IProduct[] = [
   {
     id: 106,
     categoryId: 'ao-so-mi',
@@ -263,7 +263,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // user-------------------------------
-  const usersData: Prisma.UsersCreateManyInput[] = [];
+  const usersData: Prisma.UserCreateManyInput[] = [];
   usersData.push({
     email: 'admin@gmail.com',
     firstName: 'Tuan Dung',
@@ -297,13 +297,13 @@ async function main() {
       birthday: faker.date.birthdate(),
     });
   }
-  await prisma.users.createMany({
+  await prisma.user.createMany({
     skipDuplicates: true,
     data: usersData,
   });
 
   // categories-------------------------------
-  await prisma.categories.createMany({
+  await prisma.category.createMany({
     skipDuplicates: true,
     data: [
       { name: 'Áo Polo', id: 'ao-polo', type: 'Áo' },
@@ -322,7 +322,7 @@ async function main() {
   });
 
   // products-------------------------------
-  await prisma.products.createMany({
+  await prisma.product.createMany({
     skipDuplicates: true,
     data: [...AO_POLO, ...AO_SOMI],
   });
@@ -334,7 +334,7 @@ async function main() {
   });
 
   // product models----------------------
-  await prisma.productModels.createMany({
+  await prisma.productModel.createMany({
     skipDuplicates: true,
     data: MODELS,
   });
