@@ -46,7 +46,7 @@ export class ProductsController {
   @Get('/:productId')
   @HttpCode(HttpStatus.OK)
   getProductDetail(@Param() { productId }) {
-    return this.productService.getProductDetail(productId);
+    return this.productService.getProductDetail(Number(productId));
   }
 
   @UseGuards(RolesGuard)

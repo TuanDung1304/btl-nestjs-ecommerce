@@ -91,7 +91,7 @@ export class ProductsService {
 
   async getProductDetail(productId: number) {
     const product = await this.prisma.product.findUnique({
-      where: { id: Number(productId) },
+      where: { id: productId },
       include: {
         productModels: true,
         images: true,
@@ -100,6 +100,10 @@ export class ProductsService {
     if (!product) {
       throw new ForbiddenException('Product not found');
     }
+    await this.prisma.product.update({
+      where: { id: productId },
+      data: { views: { increment: 1 } },
+    });
 
     const {
       id,

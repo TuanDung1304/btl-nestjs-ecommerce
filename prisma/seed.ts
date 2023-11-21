@@ -11,21 +11,21 @@ import { faker } from '@faker-js/faker';
 type Model = Pick<ProductModel, 'color' | 'productId' | 'quantity' | 'size'>;
 type IProduct = Pick<
   Product,
-  'id' | 'categoryId' | 'price' | 'name' | 'thumbnail'
+  'id' | 'categoryId' | 'price' | 'name' | 'thumbnail' | 'views'
 > & { description?: string; discountedPrice?: number };
 
 enum COLORS {
-  Do = 'Đỏ',
-  Vang = 'Vàng',
-  Cam = 'Cam',
-  Den = 'Đen',
-  Trang = 'Trắng',
-  Xam = 'Xám',
-  Tim = 'Tím than',
-  XanhThan = 'Xanh than',
-  Xanh = 'Xanh',
-  Nau = 'Nâu',
-  TrangKem = 'Trắng kem',
+  Red = 'Đỏ',
+  Yellow = 'Vàng',
+  Orange = 'Cam',
+  Black = 'Đen',
+  White = 'Trắng',
+  Grey = 'Xám',
+  Purple = 'Tím than',
+  Blue = 'Xanh',
+  Brown = 'Nâu',
+  Cream = 'Kem',
+  Green = 'Xanh la',
 }
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
@@ -62,8 +62,8 @@ function getRandomSizes(): string[] {
 }
 
 const fakeProductModels = (productId: number, colors?: string[]): Model[] => {
+  // random so luong 0 - 20
   return getRandomSizes().reduce<Model[]>((acc, size) => {
-    // random so luong 0 - 20
     return [
       ...acc,
       ...(colors ?? getRandomColors()).map((color) => {
@@ -90,6 +90,7 @@ const AO_POLO: IProduct[] = [
     name: 'Áo Polo trơn hiệu ứng',
     description: 'Ao Polo',
     price: 450000,
+    views: 100,
     thumbnail:
       'https://product.hstatic.net/200000690725/product/estp041-16_4cb9d42d84e7436884bd3f4e648621ed_master.jpg',
   },
@@ -100,6 +101,7 @@ const AO_POLO: IProduct[] = [
     description: 'Áo Polo len bo kẻ cổ',
     price: 500000,
     discountedPrice: 450000,
+    views: 99,
     thumbnail:
       'https://product.hstatic.net/200000690725/product/5_66590d1cba6041359e8a89a1c7e0feb5_master.jpg',
   },
@@ -110,6 +112,7 @@ const AO_POLO: IProduct[] = [
     description: 'Áo Polo trơn bo kẻ',
     price: 420000,
     discountedPrice: 400000,
+    views: 30,
     thumbnail:
       'https://product.hstatic.net/200000690725/product/1_50f16dbd5df34aa3acc99865b4820084_master.jpg',
   },
@@ -121,6 +124,7 @@ const AO_POLO: IProduct[] = [
       'Áo Polo Cotton Bền Màu, Dễ Làm Sạch, Chống Nhăn, Co Giãn 7APCT007TRK',
     price: 379000,
     discountedPrice: 169000,
+    views: 189,
     thumbnail:
       'https://product.hstatic.net/200000053174/product/2_04e7c89f41b0499a969d9ab2b8768f93_master.jpg',
   },
@@ -131,6 +135,7 @@ const AO_POLO: IProduct[] = [
     description: 'Áo Polo trơn bo kẻ',
     price: 319000,
     discountedPrice: 169000,
+    views: 98,
     thumbnail:
       'https://product.hstatic.net/200000053174/product/san_pham__1__2c4f94dbfe6a4d9caf3905b66683c63e_master.jpg',
   },
@@ -143,6 +148,7 @@ const AO_SOMI: IProduct[] = [
     name: 'Áo Sơ Mi Basic 7SMDH001GHS',
     description: 'Áo Sơ Mi Basic 7SMDH001GHS',
     price: 550000,
+    views: 200,
     thumbnail:
       'https://product.hstatic.net/200000053174/product/6_afe399af00a7441ba01c615fefd7095b_master.png',
   },
@@ -152,6 +158,7 @@ const AO_SOMI: IProduct[] = [
     name: 'Áo Sơ Mi Basic 4SMDB003DEN',
     description: 'Áo Sơ Mi Basic 4SMDB003DEN',
     price: 480000,
+    views: 85,
     thumbnail:
       'https://product.hstatic.net/200000053174/product/5_7cea344525ca40a9a05d87ed01e2764e_master.png',
   },
@@ -163,6 +170,7 @@ const AO_SOMI: IProduct[] = [
       'Áo Sơ Mi Dài Tay Từ Sợi Tre Chống Nhăn, Kháng Khuẩn, Chống Tia UV',
     price: 495000,
     discountedPrice: 399000,
+    views: 302,
     thumbnail:
       'https://product.hstatic.net/200000053174/product/5_7cea344525ca40a9a05d87ed01e2764e_master.png',
   },
@@ -172,6 +180,7 @@ const AO_SOMI: IProduct[] = [
     name: 'Áo Sơ Mi Dài Tay Từ Sợi Tre Bạc Hà Thấm Hút Tốt, Chống Nhăn',
     description: 'Áo Sơ Mi Dài Tay Từ Sợi Tre Bạc Hà Thấm Hút Tốt, Chống Nhăn',
     price: 489000,
+    views: 23,
     thumbnail:
       'https://product.hstatic.net/200000053174/product/1k__1000_x_1500_px___4__487603247e4949788ade60f9f1edc7da_master.jpg',
   },
@@ -245,16 +254,89 @@ const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
 
 // MODELS ========================
 const MODELS = [
-  ...fakeProductModels(101, [COLORS.Trang, COLORS.TrangKem, COLORS.Den]),
-  ...fakeProductModels(102, [COLORS.Den, COLORS.TrangKem]),
-  ...fakeProductModels(103, [COLORS.Den, COLORS.TrangKem]),
-  ...fakeProductModels(104, [COLORS.Den, COLORS.Trang]),
-  ...fakeProductModels(105, [COLORS.Den, COLORS.Trang]),
-  ...fakeProductModels(106, [COLORS.Xam, COLORS.Xanh]),
-  ...fakeProductModels(107, [COLORS.Den]),
-  ...fakeProductModels(108, [COLORS.Xanh]),
-  ...fakeProductModels(109, [COLORS.Xanh, COLORS.Xam]),
+  { color: 'Trắng', size: 'XS', quantity: 4, productId: 101 },
+  { color: 'Kem', size: 'XS', quantity: 10, productId: 101 },
+  { color: 'Đen', size: 'XS', quantity: 7, productId: 101 },
+  { color: 'Trắng', size: 'L', quantity: 2, productId: 101 },
+  { color: 'Kem', size: 'L', quantity: 0, productId: 101 },
+  { color: 'Đen', size: 'L', quantity: 16, productId: 101 },
+  { color: 'Trắng', size: 'M', quantity: 4, productId: 101 },
+  { color: 'Kem', size: 'M', quantity: 7, productId: 101 },
+  { color: 'Đen', size: 'M', quantity: 2, productId: 101 },
+  { color: 'Trắng', size: 'S', quantity: 13, productId: 101 },
+  { color: 'Kem', size: 'S', quantity: 9, productId: 101 },
+  { color: 'Đen', size: 'S', quantity: 8, productId: 101 },
+  { color: 'Đen', size: 'L', quantity: 18, productId: 102 },
+  { color: 'Kem', size: 'L', quantity: 12, productId: 102 },
+  { color: 'Đen', size: 'M', quantity: 1, productId: 102 },
+  { color: 'Kem', size: 'M', quantity: 2, productId: 102 },
+  { color: 'Đen', size: 'S', quantity: 18, productId: 102 },
+  { color: 'Kem', size: 'S', quantity: 11, productId: 102 },
+  { color: 'Đen', size: 'XS', quantity: 15, productId: 102 },
+  { color: 'Kem', size: 'XS', quantity: 3, productId: 102 },
+  { color: 'Đen', size: 'M', quantity: 16, productId: 103 },
+  { color: 'Trắng', size: 'M', quantity: 17, productId: 103 },
+  { color: 'Đen', size: 'XL', quantity: 7, productId: 103 },
+  { color: 'Trắng', size: 'XL', quantity: 8, productId: 103 },
+  { color: 'Đen', size: 'L', quantity: 5, productId: 103 },
+  { color: 'Trắng', size: 'L', quantity: 7, productId: 103 },
+  { color: 'Đen', size: 'XS', quantity: 5, productId: 103 },
+  { color: 'Trắng', size: 'XS', quantity: 3, productId: 103 },
+  { color: 'Xanh la', size: 'XS', quantity: 8, productId: 104 },
+  { color: 'Nâu', size: 'XS', quantity: 16, productId: 104 },
+  { color: 'Đen', size: 'XS', quantity: 3, productId: 104 },
+  { color: 'Xanh la', size: 'L', quantity: 7, productId: 104 },
+  { color: 'Nâu', size: 'L', quantity: 4, productId: 104 },
+  { color: 'Đen', size: 'L', quantity: 6, productId: 104 },
+  { color: 'Xanh la', size: 'XL', quantity: 17, productId: 104 },
+  { color: 'Nâu', size: 'XL', quantity: 18, productId: 104 },
+  { color: 'Đen', size: 'XL', quantity: 0, productId: 104 },
+  { color: 'Kem', size: 'M', quantity: 5, productId: 105 },
+  { color: 'Cam', size: 'M', quantity: 11, productId: 105 },
+  { color: 'Kem', size: 'XL', quantity: 6, productId: 105 },
+  { color: 'Cam', size: 'XL', quantity: 10, productId: 105 },
+  { color: 'Kem', size: 'S', quantity: 0, productId: 105 },
+  { color: 'Cam', size: 'S', quantity: 4, productId: 105 },
+  { color: 'Xanh la', size: 'S', quantity: 10, productId: 106 },
+  { color: 'Xám', size: 'S', quantity: 10, productId: 106 },
+  { color: 'Xanh la', size: 'XS', quantity: 9, productId: 106 },
+  { color: 'Xám', size: 'XS', quantity: 2, productId: 106 },
+  { color: 'Xanh la', size: 'L', quantity: 3, productId: 106 },
+  { color: 'Xám', size: 'L', quantity: 3, productId: 106 },
+  { color: 'Xanh la', size: 'XL', quantity: 1, productId: 106 },
+  { color: 'Xám', size: 'XL', quantity: 15, productId: 106 },
+  { color: 'Kem', size: 'M', quantity: 7, productId: 107 },
+  { color: 'Xanh la', size: 'M', quantity: 2, productId: 107 },
+  { color: 'Xanh', size: 'M', quantity: 19, productId: 107 },
+  { color: 'Xám', size: 'M', quantity: 7, productId: 107 },
+  { color: 'Trắng', size: 'M', quantity: 19, productId: 107 },
+  { color: 'Tím than', size: 'M', quantity: 11, productId: 107 },
+  { color: 'Xám', size: 'L', quantity: 17, productId: 107 },
+  { color: 'Xanh', size: 'L', quantity: 15, productId: 107 },
+  { color: 'Xanh la', size: 'L', quantity: 3, productId: 107 },
+  { color: 'Trắng', size: 'L', quantity: 11, productId: 107 },
+  { color: 'Trắng', size: 'XL', quantity: 12, productId: 107 },
+  { color: 'Xanh la', size: 'XL', quantity: 1, productId: 107 },
+  { color: 'Kem', size: 'XL', quantity: 14, productId: 107 },
+  { color: 'Cam', size: 'XL', quantity: 14, productId: 107 },
+  { color: 'Đen', size: 'XL', quantity: 10, productId: 107 },
+  { color: 'Đen', size: 'L', quantity: 16, productId: 108 },
+  { color: 'Tím than', size: 'L', quantity: 14, productId: 108 },
+  { color: 'Đen', size: 'S', quantity: 14, productId: 108 },
+  { color: 'Tím than', size: 'S', quantity: 18, productId: 108 },
+  { color: 'Đen', size: 'XL', quantity: 4, productId: 108 },
+  { color: 'Tím than', size: 'XL', quantity: 15, productId: 108 },
+  { color: 'Đen', size: 'M', quantity: 4, productId: 109 },
+  { color: 'Xám', size: 'M', quantity: 7, productId: 109 },
+  { color: 'Đen', size: 'XL', quantity: 4, productId: 109 },
+  { color: 'Xám', size: 'XL', quantity: 17, productId: 109 },
+  { color: 'Đen', size: 'XS', quantity: 11, productId: 109 },
+  { color: 'Xám', size: 'XS', quantity: 8, productId: 109 },
+  { color: 'Đen', size: 'L', quantity: 9, productId: 109 },
+  { color: 'Xám', size: 'L', quantity: 4, productId: 109 },
 ];
+
+// console.log(fakeProductModels(104, [COLORS.Green, COLORS.Brown, COLORS.Black]));
 
 /**
  Prisma ======================================
@@ -276,7 +358,7 @@ async function main() {
     role: 'Admin',
   });
   usersData.push({
-    email: 'tuandung@gmail.com',
+    email: 'tuandung13401@gmail.com',
     firstName: 'Tuan Dung',
     lastName: 'Nguyen',
     password: await bcrypt.hash('123456', 10),
