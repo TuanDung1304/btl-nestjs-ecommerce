@@ -13,39 +13,42 @@ enum Role {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  email     String     @unique
-  password  String
-  firstName String
-  lastName  String
-  phone     String?
-  address   String?
-  avatar    String?
-  birthday  DateTime?
-  role      Role       @default(User)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  hashRt    String?
-  cartItems CartItem[]
-  orders    Order[]
+  id                Int                @id @default(autoincrement())
+  email             String             @unique
+  password          String
+  firstName         String
+  lastName          String
+  phone             String?
+  address           String?
+  avatar            String?
+  birthday          DateTime?
+  role              Role               @default(User)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  hashRt            String?
+  cartItems         CartItem[]
+  orders            Order[]
+  userNotifications UserNotification[]
 
   @@map("users")
 }
 
 model Product {
-  id              Int            @id @default(autoincrement())
-  name            String
-  description     String?
-  categoryId      String
-  price           Float
-  thumbnail       String
-  discountedPrice Float?
-  productModels   ProductModel[]
-  images          Images[]
-  category        Category       @relation(fields: [categoryId], references: [id])
-  views           Int            @default(0)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  categoryId       String
+  price            Float
+  thumbnail        String
+  discountedPrice  Float?
+  productModels    ProductModel[]
+  images           Images[]
+  category         Category           @relation(fields: [categoryId], references: [id])
+  views            Int                @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Notification     Notification[]
+  UserNotification UserNotification[]
 
   @@map("products")
 }
@@ -118,6 +121,51 @@ model Order {
   updatedAt  DateTime    @updatedAt
   userId     Int
   user       User        @relation(fields: [userId], references: [id])
+  voucherId  Int?
+  voucher    Voucher?    @relation(fields: [voucherId], references: [id])
 
   @@map("orders")
+}
+
+model Voucher {
+  id        Int      @id @default(autoincrement())
+  key       String
+  discount  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+
+  @@map("vouchers")
+}
+
+model Notification {
+  id               Int                @id @default(autoincrement())
+  content          String?
+  product          Product            @relation(fields: [productId], references: [id])
+  productId        Int
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  userNotification UserNotification[]
+
+  @@map("notifications")
+}
+
+model UserNotification {
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  productId      Int
+  notificationId Int
+  notification   Notification @relation(fields: [notificationId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
+  product        Product      @relation(fields: [productId], references: [id])
+
+  @@map("user_notification")
+}
+
+model UserSeen {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  lastSeen DateTime @default(now())
+
+  @@map("user_seen")
 }
