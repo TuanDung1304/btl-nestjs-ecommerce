@@ -74,9 +74,18 @@ export class ProductsService {
   async getListProducts(): Promise<ListProductsData[]> {
     const products = await this.prisma.product.findMany({
       orderBy: { id: 'asc' },
-      include: { productModels: { select: { quantity: true } } },
+      include: {
+        productModels: {
+          select: {
+            quantity: true,
+            cartItems: {
+              select: { quantity: true },
+              where: { orderId: null },
+            },
+          },
+        },
+      },
     });
-
     return products.map(
       ({ updatedAt, description, productModels, ...rest }) => ({
         ...rest,
@@ -84,6 +93,12 @@ export class ProductsService {
         inStock: productModels.reduce((acc, model) => {
           return acc + model.quantity;
         }, 0),
+        inCart: productModels.reduce(
+          (acc, model) =>
+            acc +
+            model.cartItems.reduce((acc2, item) => acc2 + item.quantity, 0),
+          0,
+        ),
       }),
     );
   }
