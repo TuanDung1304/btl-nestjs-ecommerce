@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { compact } from 'lodash';
+import { compact, update } from 'lodash';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
   CreateProductDto,
@@ -23,7 +23,6 @@ export class ProductsService {
       data: {
         name: dto.name,
         price: dto.price,
-        discountedPrice: dto?.discountedPrice,
         description: dto?.description,
         categoryId: category.id,
         thumbnail: dto.thumbnail,
@@ -75,9 +74,18 @@ export class ProductsService {
   async getListProducts(): Promise<ListProductsData[]> {
     const products = await this.prisma.product.findMany({
       orderBy: { id: 'asc' },
-      include: { productModels: { select: { quantity: true } } },
+      include: {
+        productModels: {
+          select: {
+            quantity: true,
+            cartItems: {
+              select: { quantity: true },
+              where: { orderId: null },
+            },
+          },
+        },
+      },
     });
-
     return products.map(
       ({ updatedAt, description, productModels, ...rest }) => ({
         ...rest,
@@ -85,6 +93,12 @@ export class ProductsService {
         inStock: productModels.reduce((acc, model) => {
           return acc + model.quantity;
         }, 0),
+        inCart: productModels.reduce(
+          (acc, model) =>
+            acc +
+            model.cartItems.reduce((acc2, item) => acc2 + item.quantity, 0),
+          0,
+        ),
       }),
     );
   }
@@ -144,6 +158,13 @@ export class ProductsService {
     if (!category) {
       throw new ForbiddenException('Category not found');
     }
+    const oldProduct = await this.prisma.product.findUnique({
+      where: { id: productId },
+    });
+    if (!oldProduct) {
+      throw new ForbiddenException('Product not found');
+    }
+    const oldDiscountedPrice = oldProduct.discountedPrice;
 
     // delete images and models which are not in data
     const deletedImages = await this.prisma.images.deleteMany({
@@ -193,6 +214,43 @@ export class ProductsService {
         productModels: true,
       },
     });
+
+    if (
+      updatedProduct.discountedPrice &&
+      oldDiscountedPrice != updatedProduct.discountedPrice
+    ) {
+      const notification = await this.prisma.notification.create({
+        data: {
+          content: `${Math.floor(
+            (1 - updatedProduct.discountedPrice / updatedProduct.price) * 100,
+          )}%`,
+          productId: updatedProduct.id,
+        },
+      });
+      const usersContainProductCartItem = await this.prisma.user.findMany({
+        where: {
+          cartItems: {
+            some: {
+              productModel: {
+                productId: updatedProduct.id,
+              },
+              orderId: null,
+            },
+          },
+        },
+      });
+      await this.prisma.$transaction(
+        usersContainProductCartItem.map((user) =>
+          this.prisma.userNotification.create({
+            data: {
+              productId: updatedProduct.id,
+              userId: user.id,
+              notificationId: notification.id,
+            },
+          }),
+        ),
+      );
+    }
 
     return {
       message: 'Update successfully',

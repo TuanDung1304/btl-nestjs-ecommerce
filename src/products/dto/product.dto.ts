@@ -61,11 +61,6 @@ export class CreateProductDto {
   @Min(0)
   price: number;
 
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  discountedPrice?: number;
-
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })

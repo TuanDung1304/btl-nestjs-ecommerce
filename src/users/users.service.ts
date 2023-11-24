@@ -14,9 +14,41 @@ export class UsersService {
     const cartItems = await this.prismaService.cartItem.findMany({
       where: { userId, orderId: null },
     });
+    const lastSeen = await this.prismaService.userSeen.findFirst({
+      where: { userId },
+    });
+    const userNotification = await this.prismaService.userNotification.findMany(
+      {
+        where: {
+          userId,
+          notification: {
+            createdAt: { gte: lastSeen?.lastSeen ?? new Date(0) },
+          },
+        },
+      },
+    );
+    const notifications = await this.prismaService.notification.findMany({
+      where: {
+        id: {
+          in: userNotification.map(({ notificationId }) => notificationId),
+        },
+      },
+      select: {
+        product: {
+          select: { thumbnail: true, name: true, id: true },
+        },
+        content: true,
+        createdAt: true,
+      },
+    });
+
     const count = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
-    return { ...resData, cartQuantity: count };
+    return {
+      ...resData,
+      cartQuantity: count,
+      notifications,
+    };
   }
 
   async getListUsers(): Promise<ListUsersData[]> {
