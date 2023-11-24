@@ -151,7 +151,6 @@ export class ProductsService {
 
   async updateProduct(dto: UpdateProductDto, productId: number) {
     const { productModels, images, categoryId, ...rest } = dto;
-    console.log(dto);
 
     const category = await this.prisma.category.findUnique({
       where: { id: dto.categoryId },
@@ -222,7 +221,7 @@ export class ProductsService {
     ) {
       const notification = await this.prisma.notification.create({
         data: {
-          content: `Sản phẩm được giảm giá ${Math.floor(
+          content: `${Math.floor(
             (1 - updatedProduct.discountedPrice / updatedProduct.price) * 100,
           )}%`,
           productId: updatedProduct.id,
