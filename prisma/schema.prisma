@@ -29,6 +29,7 @@ model User {
   cartItems         CartItem[]
   orders            Order[]
   userNotifications UserNotification[]
+  lastSeen          UserSeen[]
 
   @@map("users")
 }
@@ -164,8 +165,9 @@ model UserNotification {
 
 model UserSeen {
   id       Int      @id @default(autoincrement())
-  userId   Int
+  user     User     @relation(fields: [userId], references: [id])
   lastSeen DateTime @default(now())
+  userId   Int
 
   @@map("user_seen")
 }
