@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ListUsersData } from 'src/users/types';
 
@@ -55,5 +55,22 @@ export class UsersService {
     const users = await this.prismaService.user.findMany();
 
     return users.map(({ hashRt, updatedAt, password, ...rest }) => rest);
+  }
+
+  async setLastSeen(userId: number) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new ForbiddenException();
+    }
+
+    const lastSeen = await this.prismaService.userSeen.create({
+      data: {
+        userId,
+      },
+    });
+
+    return { lastSeen: lastSeen.lastSeen };
   }
 }

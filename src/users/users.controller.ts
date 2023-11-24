@@ -3,6 +3,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Post,
   UseGuards,
 } from '@nestjs/common';
 import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
@@ -24,5 +25,11 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   getUsers() {
     return this.usersService.getListUsers();
+  }
+
+  @Post('/userSeen')
+  @HttpCode(HttpStatus.OK)
+  setLastSeen(@GetCurrentUser('sub') userId: number) {
+    return this.usersService.setLastSeen(userId);
   }
 }
