@@ -42,17 +42,24 @@ export class ProductsController {
     return this.productService.getListProducts();
   }
 
-  @Public()
-  @Get('/:productId')
-  @HttpCode(HttpStatus.OK)
-  getProductDetail(@Param() { productId }) {
-    return this.productService.getProductDetail(Number(productId));
-  }
-
   @UseGuards(RolesGuard)
   @Post('/edit/:productId')
   @HttpCode(HttpStatus.OK)
   updateProduct(@Body() dto: UpdateProductDto, @Param() { productId }) {
     return this.productService.updateProduct(dto, Number(productId));
+  }
+
+  @Public()
+  @Get('/trending')
+  @HttpCode(HttpStatus.OK)
+  getTrending() {
+    return this.productService.getTrendingProducts();
+  }
+
+  @Public()
+  @Get('/:productId')
+  @HttpCode(HttpStatus.OK)
+  getProductDetail(@Param() { productId }) {
+    return this.productService.getProductDetail(Number(productId));
   }
 }
