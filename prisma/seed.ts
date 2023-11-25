@@ -391,15 +391,12 @@ async function main() {
       { name: 'Áo Polo', id: 'ao-polo', type: 'Áo' },
       { name: 'Áo Sơ Mi', id: 'ao-so-mi', type: 'Áo' },
       { name: 'Áo Khoác', id: 'ao-khoac', type: 'Áo' },
-      { name: 'Áo Phông', id: 'ao-phong', type: 'Áo' },
-      { name: 'Áo Len', id: 'ao-len', type: 'Áo' },
       { name: 'Áo Vest', id: 'ao-vest', type: 'Áo' },
       { name: 'Quần Jean', id: 'quan-jean', type: 'Quần' },
       { name: 'Quần Tây', id: 'quan-tay', type: 'Quần' },
       { name: 'Quần Kaki', id: 'quan-kaki', type: 'Quần' },
       { name: 'Quần Đùi', id: 'quan-gio', type: 'Quần' },
       { name: 'Giày', id: 'giay', type: 'Phụ Kiện' },
-      { name: 'Ví', id: 'vi', type: 'Phụ Kiện' },
     ],
   });
 
