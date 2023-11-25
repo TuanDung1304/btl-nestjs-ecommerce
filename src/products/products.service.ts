@@ -263,4 +263,22 @@ export class ProductsService {
   }
 
   async getProductsByCategories() {}
+
+  async getTrendingProducts() {
+    const products = await this.prisma.product.findMany({
+      take: 5,
+      orderBy: {
+        views: 'desc',
+      },
+      select: {
+        id: true,
+        name: true,
+        thumbnail: true,
+        price: true,
+        discountedPrice: true,
+      },
+    });
+
+    return products;
+  }
 }
