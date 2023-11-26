@@ -113,24 +113,28 @@ enum OrderStatus {
 }
 
 model Order {
-  id         Int         @id @default(autoincrement())
-  cartItems  CartItem[]
-  status     OrderStatus @default(Pending)
-  location   String
-  totalPrice Float
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  userId     Int
-  user       User        @relation(fields: [userId], references: [id])
-  voucherId  Int?
-  voucher    Voucher?    @relation(fields: [voucherId], references: [id])
+  id            Int         @id @default(autoincrement())
+  cartItems     CartItem[]
+  status        OrderStatus @default(Pending)
+  address       String
+  province      String
+  district      String
+  shipmentPrice Float
+  totalPrice    Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  userId        Int
+  user          User        @relation(fields: [userId], references: [id])
+  voucherId     Int?
+  voucher       Voucher?    @relation(fields: [voucherId], references: [id])
+  note          String?
 
   @@map("orders")
 }
 
 model Voucher {
   id        Int      @id @default(autoincrement())
-  key       String
+  key       String   @unique
   discount  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
