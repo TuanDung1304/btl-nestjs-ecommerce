@@ -10,6 +10,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { CartsController } from './carts/carts.controller';
 import { CartsService } from './carts/carts.service';
 import { CartsModule } from './carts/carts.module';
+import { OrdersController } from './orders/orders.controller';
+import { OrdersService } from './orders/orders.service';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -20,6 +23,7 @@ import { CartsModule } from './carts/carts.module';
     CategoriesModule,
     UsersModule,
     CartsModule,
+    OrdersModule,
   ],
   providers: [
     {
@@ -30,8 +34,6 @@ import { CartsModule } from './carts/carts.module';
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
-    CartsService,
   ],
-  controllers: [CartsController],
 })
 export class AppModule {}
