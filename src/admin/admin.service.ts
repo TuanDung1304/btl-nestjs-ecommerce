@@ -15,22 +15,22 @@ export class AdminService {
 
   getLast7daysChartData(
     data: { createdAt: Date }[],
-  ): { day: string; value: number }[] {
-    const days = [];
+  ): { name: string; value: number }[] {
+    const days: { name: string; value: number }[] = [];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     for (let i = 0; i < 7; i++) {
-      const day = this.getDayOfWeek(
+      const name = this.getDayOfWeek(
         new Date(today.getTime() - i * 3600 * 24 * 1000),
       );
-      days.push({ day, value: 0 });
+      days.push({ name, value: 0 });
     }
     const grouped = groupBy(data, (item) => this.getDayOfWeek(item.createdAt));
 
     return days.map((day) => ({
       ...day,
-      value: grouped[day.day]?.length ?? 0,
+      value: grouped[day.name]?.length ?? 0,
     }));
   }
 

@@ -1,6 +1,6 @@
 export interface ChartData {
   total: number;
-  chartData: { day: string; value: number }[];
+  chartData: { name: string; value: number }[];
   percentage: number;
   dataKey: ChartName;
 }
