@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { AdminGuard } from 'src/common/guards/roles.guard';
 import { UsersService } from 'src/users/users.service';
 
 @Controller('users')
@@ -21,7 +21,7 @@ export class UsersController {
   }
 
   @Get('/listUsers')
-  @UseGuards(RolesGuard)
+  @UseGuards(AdminGuard)
   @HttpCode(HttpStatus.OK)
   getUsers() {
     return this.usersService.getListUsers();

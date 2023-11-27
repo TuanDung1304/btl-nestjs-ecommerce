@@ -7,12 +7,9 @@ import { UsersModule } from 'src/users/users.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AtGuard } from 'src/common/guards/at.guard';
 import { JwtModule } from '@nestjs/jwt';
-import { CartsController } from './carts/carts.controller';
-import { CartsService } from './carts/carts.service';
 import { CartsModule } from './carts/carts.module';
-import { OrdersController } from './orders/orders.controller';
-import { OrdersService } from './orders/orders.service';
 import { OrdersModule } from './orders/orders.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -24,6 +21,7 @@ import { OrdersModule } from './orders/orders.module';
     UsersModule,
     CartsModule,
     OrdersModule,
+    AdminModule,
   ],
   providers: [
     {

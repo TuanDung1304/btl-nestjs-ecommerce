@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Public } from 'src/common/decorators/public.decorator';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { AdminGuard } from 'src/common/guards/roles.guard';
 import {
   CreateProductDto,
   DeleteProductDto,
@@ -21,28 +21,28 @@ import { ProductsService } from 'src/products/products.service';
 export class ProductsController {
   constructor(private productService: ProductsService) {}
 
-  @UseGuards(RolesGuard)
+  @UseGuards(AdminGuard)
   @Post('/create')
   @HttpCode(HttpStatus.CREATED)
   createProduct(@Body() dto: CreateProductDto) {
     return this.productService.createProduct(dto);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(AdminGuard)
   @Post('/delete')
   @HttpCode(HttpStatus.OK)
   deleteProduct(@Body() dto: DeleteProductDto) {
     return this.productService.deleteProduct(dto);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(AdminGuard)
   @Get('/listProducts')
   @HttpCode(HttpStatus.OK)
   getProducts() {
     return this.productService.getListProducts();
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(AdminGuard)
   @Post('/edit/:productId')
   @HttpCode(HttpStatus.OK)
   updateProduct(@Body() dto: UpdateProductDto, @Param() { productId }) {

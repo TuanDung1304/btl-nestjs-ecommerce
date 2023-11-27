@@ -3,7 +3,7 @@ import { Role } from '@prisma/client';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class RolesGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
