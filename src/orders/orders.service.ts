@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { MIN_PRICE_TO_FREE_SHIP, SHIPMENT_COST } from 'src/orders/consts';
-import { CreateOrderDto } from 'src/orders/createOrder.dto';
+import { CreateOrderDto } from 'src/orders/dtos/createOrder.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -64,5 +64,21 @@ export class OrdersService {
         totalPrice: order.totalPrice,
       },
     };
+  }
+
+  async getMyOrders(userId: number) {
+    const orders = await this.prisma.order.findMany({
+      where: { userId },
+      select: {
+        address: true,
+        id: true,
+        status: true,
+        totalPrice: true,
+        cartItems: { select: { quantity: true } },
+        createdAt: true,
+      },
+    });
+
+    return orders;
   }
 }

@@ -33,4 +33,8 @@ export class CreateOrderDto {
   @IsString()
   @IsOptional()
   voucher?: string;
+
+  @IsString()
+  @IsOptional()
+  avatar?: string;
 }
