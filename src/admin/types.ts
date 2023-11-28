@@ -1,3 +1,5 @@
+import { User } from '@prisma/client';
+
 export interface ChartData {
   total: number;
   chartData: { name: string; value: number }[];
@@ -12,4 +14,13 @@ export enum ChartName {
   Profit = 'profit',
 }
 
-export type DashboardData = Record<ChartName, ChartData>;
+export type TopDeal = Pick<
+  User,
+  'id' | 'firstName' | 'lastName' | 'email' | 'avatar'
+> & {
+  total: number;
+};
+
+export type DashboardData = Record<ChartName, ChartData> & {
+  topDeals: TopDeal[];
+};

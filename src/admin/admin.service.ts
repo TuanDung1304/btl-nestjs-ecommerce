@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { groupBy } from 'lodash';
-import { ChartData, ChartName, DashboardData } from 'src/admin/types';
+import { groupBy, sortBy } from 'lodash';
+import { ChartData, ChartName, DashboardData, TopDeal } from 'src/admin/types';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -85,12 +85,36 @@ export class AdminService {
     };
   }
 
+  async topDeals(): Promise<TopDeal[]> {
+    const users = await this.prisma.user.findMany({
+      where: { role: { not: 'Admin' } },
+      select: {
+        id: true,
+        avatar: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        orders: { select: { totalPrice: true } },
+      },
+    });
+
+    const response = users
+      .map(({ orders, ...rest }) => ({
+        ...rest,
+        total: orders.reduce((acc, item) => acc + item.totalPrice, 0),
+      }))
+      .slice(0, 5);
+
+    return sortBy(response, 'total');
+  }
+
   async getDashboard(): Promise<DashboardData> {
     return {
       products: await this.getChartData(ChartName.Products),
       orders: await this.getChartData(ChartName.Orders),
       users: await this.getChartData(ChartName.Users),
       profit: await this.getChartData(ChartName.Profit),
+      topDeals: await this.topDeals(),
     };
   }
 }
