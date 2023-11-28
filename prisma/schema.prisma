@@ -110,6 +110,7 @@ enum OrderStatus {
   Pending
   Delivering
   Completed
+  Cancelled
 }
 
 model Order {

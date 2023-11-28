@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateProfileDto } from 'src/users/dtos/updateInfo.dto';
 import { ListUsersData } from 'src/users/types';
 
 @Injectable()
@@ -72,5 +73,21 @@ export class UsersService {
     });
 
     return { lastSeen: lastSeen.lastSeen };
+  }
+
+  async updateUserInfo(dto: UpdateProfileDto, userId: number) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new ForbiddenException('User not found');
+    }
+
+    const updatedUser = await this.prismaService.user.update({
+      where: { id: userId },
+      data: { ...dto },
+    });
+
+    return { message: 'Update successfully', updatedUser };
   }
 }
