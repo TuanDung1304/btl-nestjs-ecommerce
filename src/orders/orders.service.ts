@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { uniq } from 'lodash';
 import { MIN_PRICE_TO_FREE_SHIP, SHIPMENT_COST } from 'src/orders/consts';
 import { CreateOrderDto } from 'src/orders/dtos/createOrder.dto';
+import { UpdateStatus } from 'src/orders/dtos/updateStatus.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -93,6 +94,13 @@ export class OrdersService {
         totalPrice: true,
         status: true,
         createdAt: true,
+        user: {
+          select: {
+            email: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
         cartItems: {
           select: {
             quantity: true,
@@ -112,11 +120,25 @@ export class OrdersService {
       },
     });
 
-    return orders.map(({ cartItems, ...rest }) => ({
+    return orders.map(({ cartItems, user, ...rest }) => ({
       ...rest,
       totalModel: cartItems.reduce((acc, item) => acc + item.quantity, 0),
       totalProduct: uniq(cartItems.map((item) => item.productModel.product.id))
         .length,
+      userName: `${user.firstName} ${user.lastName}`,
     }));
+  }
+
+  async updateStatus({ orderId, status }: UpdateStatus) {
+    await this.prisma.order.update({
+      where: { id: orderId },
+      data: {
+        status,
+      },
+    });
+
+    return {
+      message: 'Cập nhật trạng thái thành công',
+    };
   }
 }

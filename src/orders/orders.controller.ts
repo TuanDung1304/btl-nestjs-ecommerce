@@ -10,6 +10,7 @@ import {
 import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
 import { AdminGuard } from 'src/common/guards/roles.guard';
 import { CreateOrderDto } from 'src/orders/dtos/createOrder.dto';
+import { UpdateStatus } from 'src/orders/dtos/updateStatus.dto';
 import { OrdersService } from 'src/orders/orders.service';
 
 @Controller('orders')
@@ -34,5 +35,10 @@ export class OrdersController {
   @Get('/admin-orders')
   getOrders() {
     return this.ordersService.adminGetOrders();
+  }
+
+  @Post('/update-status')
+  updateStatus(@Body() dto: UpdateStatus) {
+    return this.ordersService.updateStatus(dto);
   }
 }
