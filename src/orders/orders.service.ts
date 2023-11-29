@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { uniq } from 'lodash';
 import { MIN_PRICE_TO_FREE_SHIP, SHIPMENT_COST } from 'src/orders/consts';
 import { CreateOrderDto } from 'src/orders/dtos/createOrder.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -80,5 +81,42 @@ export class OrdersService {
     });
 
     return orders;
+  }
+
+  async adminGetOrders() {
+    const orders = await this.prisma.order.findMany({
+      select: {
+        id: true,
+        address: true,
+        district: true,
+        province: true,
+        totalPrice: true,
+        status: true,
+        createdAt: true,
+        cartItems: {
+          select: {
+            quantity: true,
+            productModel: {
+              select: {
+                id: true,
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return orders.map(({ cartItems, ...rest }) => ({
+      ...rest,
+      totalModel: cartItems.reduce((acc, item) => acc + item.quantity, 0),
+      totalProduct: uniq(cartItems.map((item) => item.productModel.product.id))
+        .length,
+    }));
   }
 }

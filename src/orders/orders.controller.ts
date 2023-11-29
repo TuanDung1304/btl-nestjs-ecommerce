@@ -5,8 +5,10 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
+import { AdminGuard } from 'src/common/guards/roles.guard';
 import { CreateOrderDto } from 'src/orders/dtos/createOrder.dto';
 import { OrdersService } from 'src/orders/orders.service';
 
@@ -26,5 +28,11 @@ export class OrdersController {
   @HttpCode(HttpStatus.CREATED)
   getMyOrders(@GetCurrentUser('sub') userId: number) {
     return this.ordersService.getMyOrders(userId);
+  }
+
+  @UseGuards(AdminGuard)
+  @Get('/admin-orders')
+  getOrders() {
+    return this.ordersService.adminGetOrders();
   }
 }
