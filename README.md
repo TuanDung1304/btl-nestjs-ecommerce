@@ -22,40 +22,42 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
+## Hướng dẫn cài đặt
+## Clone dự án
 ```bash
-$ yarn install
+$ git clone https://github.com/TuanDung1304/btl-nestjs-ecommerce.git
+```
+```bash
+$ cd btl-nestjs-ecommerce
 ```
 
-## Running the app
+## Cài đặt node_modules
 
 ```bash
-# development
-$ yarn run start
+$ yarn
+```
 
+## Dựng Posgresql Docker
+```bash
+# Tải Image Posgresql 12 và Build Container
+# Cần chạy docker mỗi khi start backend server
+$ docker compose up -d
+```
+
+
+## Migrate database và seed data
+```bash
+# Migrate
+$ npx prisma migrate dev
+# Seed
+$ npx prisma db seed
+```
+
+## Running the app - Port 3333
+
+```bash
 # watch mode
 $ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
 ```
 
 ## Support
