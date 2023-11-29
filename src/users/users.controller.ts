@@ -41,7 +41,6 @@ export class UsersController {
     @Body() dto: UpdateProfileDto,
     @GetCurrentUser('sub') userId: number,
   ) {
-    console.log(dto);
     return this.usersService.updateUserInfo(dto, userId);
   }
 }
