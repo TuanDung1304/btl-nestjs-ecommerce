@@ -17,10 +17,10 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
-    if (user) throw new ForbiddenException('Email already in use');
+    if (user) throw new ForbiddenException('Email đã tồn tại!');
 
     if (dto.password !== dto.confirmPassword) {
-      throw new ForbiddenException('The confirmed password is incorrect');
+      throw new ForbiddenException('Mật khẩu xác nhận không đúng');
     }
 
     const hashedPassword = await this.hashData(dto.password);
@@ -35,7 +35,7 @@ export class AuthService {
     });
 
     return {
-      message: 'Sign up successful',
+      message: 'Đăng ký tài khoản thành công!',
       user: { email: newUser.email, id: newUser.id },
     };
   }
@@ -44,12 +44,13 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
-    if (!user) throw new ForbiddenException('Account does not exist');
+    if (!user) throw new ForbiddenException('Tài khoản không tồn tại!');
 
     const { email, password, id, role, avatar, firstName, lastName } = user;
 
     const passwordMatches = await bcrypt.compare(dto.password, password);
-    if (!passwordMatches) throw new ForbiddenException('Wrong password');
+    if (!passwordMatches)
+      throw new ForbiddenException('Mật khẩu không chính xác!');
 
     const [accessToken, refreshToken] = await Promise.all([
       this.getToken(id, email, role, 'at'),
@@ -64,7 +65,7 @@ export class AuthService {
         accessToken,
         refreshToken,
       },
-      message: 'Login successful',
+      message: 'Đăng nhập thành công',
       user: {
         id,
         email,
@@ -82,12 +83,12 @@ export class AuthService {
       data: { hashRt: null },
     });
 
-    return { message: 'Logout successful' };
+    return { message: 'Đăng xuất thành công' };
   }
 
   async refreshTokens(userId: number) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user) throw new ForbiddenException('User do not exist');
+    if (!user) throw new ForbiddenException('Tài khoản không tồn tại');
 
     const { id, email, role } = user;
     const [accessToken] = await Promise.all([

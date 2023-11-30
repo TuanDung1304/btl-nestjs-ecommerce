@@ -12,7 +12,7 @@ export class CartsService {
       where: { id: dto.modelId },
     });
     if (!model) {
-      throw new ForbiddenException('Product model is not exist');
+      throw new ForbiddenException('Model sản phẩm không tồn tại');
     }
     const cartItem = await this.prismaService.cartItem.upsert({
       where: {
@@ -29,7 +29,7 @@ export class CartsService {
     });
 
     return {
-      message: 'Add product to cart successfully',
+      message: 'Đã thêm vào giỏ hàng',
       cartItem: { id: cartItem.id, quantity: cartItem.quantity },
     };
   }
@@ -92,7 +92,7 @@ export class CartsService {
         },
       });
       return {
-        message: 'Delete successfully',
+        message: 'Đã xóa',
       };
     }
     const newCart = await this.prismaService.cartItem.update({
@@ -102,7 +102,7 @@ export class CartsService {
       },
     });
     return {
-      message: 'Update quantity successfully',
+      message: 'Thay đổi số lượng thành công',
       quantity: newCart.quantity,
     };
   }

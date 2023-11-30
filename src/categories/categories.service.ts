@@ -13,7 +13,7 @@ export class CategoriesService {
       where: { id: dto.id },
     });
     if (category) {
-      throw new ForbiddenException('Category already exists');
+      throw new ForbiddenException('Danh mục không tồn tại');
     }
     const newCategory = await this.prismaService.category.create({
       data: { id: dto.id, name: dto.name, type: dto.type },

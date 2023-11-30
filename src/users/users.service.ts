@@ -63,7 +63,7 @@ export class UsersService {
       where: { id: userId },
     });
     if (!user) {
-      throw new ForbiddenException();
+      throw new ForbiddenException('Người dùng không tồn tại');
     }
 
     const lastSeen = await this.prismaService.userSeen.create({
@@ -80,7 +80,7 @@ export class UsersService {
       where: { id: userId },
     });
     if (!user) {
-      throw new ForbiddenException('User not found');
+      throw new ForbiddenException('Người dùng không tồn tại');
     }
 
     const updatedUser = await this.prismaService.user.update({
@@ -88,6 +88,6 @@ export class UsersService {
       data: { ...dto },
     });
 
-    return { message: 'Update successfully', updatedUser };
+    return { message: 'Cập nhật thành công', updatedUser };
   }
 }
