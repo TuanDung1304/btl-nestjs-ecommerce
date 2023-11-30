@@ -17,7 +17,7 @@ export class ProductsService {
       where: { id: dto.categoryId },
     });
     if (!category) {
-      throw new ForbiddenException('Category not found');
+      throw new ForbiddenException('Danh mục không tồn tại');
     }
     const product = await this.prisma.product.create({
       data: {
@@ -44,7 +44,7 @@ export class ProductsService {
     });
 
     return {
-      message: 'Tao san pham moi thanh cong',
+      message: 'Tạo sản phẩm mới thành công',
       id: product.id,
     };
   }
@@ -54,7 +54,7 @@ export class ProductsService {
       where: { id: dto.id },
     });
     if (!product) {
-      throw new ForbiddenException('Product not found');
+      throw new ForbiddenException('Không tìm thấy sản phẩm');
     }
 
     await this.prisma.images.deleteMany({ where: { productId: dto.id } });
@@ -67,7 +67,7 @@ export class ProductsService {
     });
 
     return {
-      message: 'Delete product successfully',
+      message: 'Đã xóa sản phẩm',
     };
   }
 
@@ -112,7 +112,7 @@ export class ProductsService {
       },
     });
     if (!product) {
-      throw new ForbiddenException('Product not found');
+      throw new ForbiddenException('Không tìm thấy sản phẩm');
     }
     await this.prisma.product.update({
       where: { id: productId },
@@ -156,13 +156,13 @@ export class ProductsService {
       where: { id: dto.categoryId },
     });
     if (!category) {
-      throw new ForbiddenException('Category not found');
+      throw new ForbiddenException('Danh mục không tồn tại');
     }
     const oldProduct = await this.prisma.product.findUnique({
       where: { id: productId },
     });
     if (!oldProduct) {
-      throw new ForbiddenException('Product not found');
+      throw new ForbiddenException('Không tìm thấy sản phẩm');
     }
     const oldDiscountedPrice = oldProduct.discountedPrice;
 
@@ -253,7 +253,7 @@ export class ProductsService {
     }
 
     return {
-      message: 'Update successfully',
+      message: 'Cập nhật thành công',
       data: {
         updatedProduct,
         deletedImages,
