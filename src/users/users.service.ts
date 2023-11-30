@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateProfileDto } from 'src/users/dtos/updateInfo.dto';
 import { ListUsersData } from 'src/users/types';
@@ -11,6 +15,9 @@ export class UsersService {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
+    if (!user.isActive) {
+      throw new UnauthorizedException();
+    }
     const { createdAt, updatedAt, password, hashRt, ...resData } = user;
     const cartItems = await this.prismaService.cartItem.findMany({
       where: { userId, orderId: null },
