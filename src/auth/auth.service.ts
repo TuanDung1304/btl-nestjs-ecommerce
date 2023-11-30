@@ -44,7 +44,12 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
-    if (!user) throw new ForbiddenException('Tài khoản không tồn tại!');
+    if (!user) {
+      throw new ForbiddenException('Tài khoản không tồn tại!');
+    }
+    if (!user.isActive) {
+      throw new ForbiddenException('Tài khoản đã bị khóa!');
+    }
 
     const { email, password, id, role, avatar, firstName, lastName } = user;
 
@@ -102,11 +107,16 @@ export class AuthService {
     };
   }
 
-  hashData(data: string) {
+  private hashData(data: string) {
     return bcrypt.hash(data, 10);
   }
 
-  async getToken(userId: number, email: string, role: Role, type: 'at' | 'rt') {
+  private async getToken(
+    userId: number,
+    email: string,
+    role: Role,
+    type: 'at' | 'rt',
+  ) {
     return await this.jwtService.signAsync(
       {
         sub: userId,

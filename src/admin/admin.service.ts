@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { groupBy, orderBy, reverse } from 'lodash';
+import { UpdateUserStatus } from 'src/admin/dtos/updateUserStatus.dto';
 import { ChartData, ChartName, DashboardData, TopDeal } from 'src/admin/types';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -7,13 +8,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class AdminService {
   constructor(private prisma: PrismaService) {}
 
-  getPercentage(data: { createdAt: Date }[]) {
+  private getPercentage(data: { createdAt: Date }[]) {
     const last2Days = this.getLast7daysChartData(data).splice(-2, 2);
     if (last2Days[0].value === 0) return last2Days[1].value ? 100 : 0;
     return Math.ceil((last2Days[1].value / last2Days[0].value - 1) * 100);
   }
 
-  getLast7daysChartData(
+  private getLast7daysChartData(
     data: { createdAt: Date }[],
   ): { name: string; value: number }[] {
     const days: { name: string; value: number }[] = [];
@@ -34,12 +35,12 @@ export class AdminService {
     );
   }
 
-  getDayOfWeek(date: Date): string {
+  private getDayOfWeek(date: Date): string {
     const options: Intl.DateTimeFormatOptions = { weekday: 'long' };
     return date.toLocaleDateString('vn-VI', options);
   }
 
-  async getChartData(type: ChartName): Promise<ChartData> {
+  private async getChartData(type: ChartName): Promise<ChartData> {
     let total, data;
     const startToday = new Date().setHours(0, 0, 0, 0);
     const sevenDaysAgo = new Date(startToday - 6 * 24 * 3600 * 1000);
@@ -113,6 +114,19 @@ export class AdminService {
       users: await this.getChartData(ChartName.Users),
       profit: await this.getChartData(ChartName.Profit),
       topDeals: await this.topDeals(),
+    };
+  }
+
+  async updateUserStatus(dto: UpdateUserStatus) {
+    await this.prisma.user.update({
+      where: { id: dto.userId },
+      data: {
+        isActive: dto.status === 'Active' ? true : false,
+      },
+    });
+
+    return {
+      message: 'Cập nhật thành công',
     };
   }
 }

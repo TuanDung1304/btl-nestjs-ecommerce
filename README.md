@@ -23,10 +23,13 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Hướng dẫn cài đặt
+
 ## Clone dự án
+
 ```bash
 $ git clone https://github.com/TuanDung1304/btl-nestjs-ecommerce.git
 ```
+
 ```bash
 $ cd btl-nestjs-ecommerce
 ```
@@ -38,14 +41,15 @@ $ yarn
 ```
 
 ## Dựng Posgresql Docker
+
 ```bash
 # Tải Image Posgresql 12 và Build Container
 # Cần chạy docker mỗi khi start backend server
 $ docker compose up -d
 ```
 
-
 ## Migrate database và seed data
+
 ```bash
 # Migrate
 $ npx prisma migrate dev
