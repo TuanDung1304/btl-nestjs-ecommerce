@@ -37,6 +37,9 @@ export class CartsService {
   async getCart(userId: number) {
     const cartItems = await this.prismaService.cartItem.findMany({
       where: { userId, orderId: null },
+      orderBy: {
+        createdAt: 'desc',
+      },
       select: {
         id: true,
         quantity: true,
