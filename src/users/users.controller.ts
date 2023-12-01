@@ -43,4 +43,10 @@ export class UsersController {
   ) {
     return this.usersService.updateUserInfo(dto, userId);
   }
+
+  @Get('/notifications')
+  @HttpCode(HttpStatus.OK)
+  getNotifications(@GetCurrentUser('sub') userId: number) {
+    return this.usersService.getNotifications(userId);
+  }
 }

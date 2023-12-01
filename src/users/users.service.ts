@@ -24,8 +24,11 @@ export class UsersService {
     });
     const lastSeen = await this.prismaService.userSeen.findFirst({
       where: { userId },
+      orderBy: {
+        lastSeen: 'desc',
+      },
     });
-    const userNotification = await this.prismaService.userNotification.findMany(
+    const unSeenNotifications = await this.prismaService.userNotification.count(
       {
         where: {
           userId,
@@ -35,27 +38,13 @@ export class UsersService {
         },
       },
     );
-    const notifications = await this.prismaService.notification.findMany({
-      where: {
-        id: {
-          in: userNotification.map(({ notificationId }) => notificationId),
-        },
-      },
-      select: {
-        product: {
-          select: { thumbnail: true, name: true, id: true },
-        },
-        content: true,
-        createdAt: true,
-      },
-    });
 
     const count = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
     return {
       ...resData,
       cartQuantity: count,
-      notifications,
+      notifyBadge: unSeenNotifications,
     };
   }
 
@@ -96,5 +85,42 @@ export class UsersService {
     });
 
     return { message: 'Cập nhật thành công', updatedUser };
+  }
+
+  async getNotifications(userId: number) {
+    const lastSeen = await this.prismaService.userSeen.findFirst({
+      where: { userId },
+      orderBy: {
+        lastSeen: 'desc',
+      },
+    });
+    const userNotification = await this.prismaService.userNotification.findMany(
+      {
+        where: {
+          userId,
+        },
+        select: {
+          notification: {
+            select: {
+              product: {
+                select: { thumbnail: true, name: true, id: true },
+              },
+              content: true,
+              createdAt: true,
+            },
+          },
+        },
+        orderBy: {
+          notification: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    );
+
+    return {
+      lastSeen: lastSeen.lastSeen,
+      notifications: userNotification.map((item) => item.notification),
+    };
   }
 }
