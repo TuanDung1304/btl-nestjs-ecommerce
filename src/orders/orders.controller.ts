@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { GetCurrentUser } from 'src/common/decorators/currentUser.decorator';
 import { AdminGuard } from 'src/common/guards/roles.guard';
+import { CancelOrderDto } from 'src/orders/dtos/cancelOrder.dts';
 import { CreateOrderDto } from 'src/orders/dtos/createOrder.dto';
 import { UpdateStatus } from 'src/orders/dtos/updateStatus.dto';
 import { OrdersService } from 'src/orders/orders.service';
@@ -40,5 +41,10 @@ export class OrdersController {
   @Post('/update-status')
   updateStatus(@Body() dto: UpdateStatus) {
     return this.ordersService.updateStatus(dto);
+  }
+
+  @Post('/cancel')
+  cancelOrder(@Body() dto: CancelOrderDto) {
+    return this.ordersService.cancelOrder(dto);
   }
 }

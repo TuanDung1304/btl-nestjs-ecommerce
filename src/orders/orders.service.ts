@@ -141,4 +141,17 @@ export class OrdersService {
       message: 'Cập nhật trạng thái thành công',
     };
   }
+
+  async cancelOrder({ orderId }: { orderId: number }) {
+    await this.prisma.order.update({
+      where: { id: orderId },
+      data: {
+        status: 'Cancelled',
+      },
+    });
+
+    return {
+      message: 'Hủy đơn hàng thành công',
+    };
+  }
 }
