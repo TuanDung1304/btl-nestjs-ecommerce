@@ -14,19 +14,31 @@ export class CartsService {
     if (!model) {
       throw new ForbiddenException('Model sản phẩm không tồn tại');
     }
-    const cartItem = await this.prismaService.cartItem.upsert({
+    const cartItems = await this.prismaService.cartItem.findMany({
       where: {
-        userId_productModelId: { userId, productModelId: dto.modelId },
-      },
-      create: {
-        quantity: dto.quantity,
+        userId,
         productModelId: dto.modelId,
-        userId: userId,
-      },
-      update: {
-        quantity: { increment: dto.quantity },
+        orderId: null,
       },
     });
+
+    let cartItem;
+    if (!cartItems.length) {
+      cartItem = await this.prismaService.cartItem.create({
+        data: {
+          quantity: dto.quantity,
+          productModelId: dto.modelId,
+          userId: userId,
+        },
+      });
+    } else {
+      cartItem = await this.prismaService.cartItem.updateMany({
+        where: { userId, productModelId: dto.modelId, orderId: null },
+        data: {
+          quantity: { increment: dto.quantity },
+        },
+      });
+    }
 
     return {
       message: 'Đã thêm vào giỏ hàng',
