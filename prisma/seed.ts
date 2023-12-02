@@ -185,8 +185,6 @@ const AO_SOMI: IProduct[] = [
   },
 ];
 
-const AO_VEST: IProduct[] = [];
-
 const AO_KHOAC_GIO: IProduct[] = [
   {
     id: 111,
@@ -237,6 +235,157 @@ const AO_KHOAC_GIO: IProduct[] = [
     views: 56,
     thumbnail:
       'https://product.hstatic.net/200000053174/product/6ag2t011den-795k_2___copy__e34ea1d7ef0c4bbeb96d0d9bae3badc1_master.jpg',
+  },
+];
+
+const AO_VEST: IProduct[] = [];
+
+const GIAY: IProduct[] = [
+  {
+    id: 121,
+    categoryId: 'giay',
+    name: 'Giày tây da 6GDAT002DEN',
+    description: 'Giày tây da 6GDAT002DEN',
+    price: 1500000,
+    views: 56,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/2_6b6f7bb0cdac49c6b8012e22f9c4afda_master.jpg',
+  },
+  {
+    id: 122,
+    categoryId: 'giay',
+    name: 'Giày tây da 5GDAT006NAU',
+    description: 'Giày tây da 5GDAT006NAU',
+    price: 990000,
+    views: 75,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/5gdat006nau01-999k_4___copy__4569bec0a77b47e9844f7b64ec0b34e8_master_b12a8ba0b25a46d8bdcb2667d3cb0f78_master.jpg',
+  },
+  {
+    id: 123,
+    categoryId: 'giay',
+    name: 'Giày tây da 5GDAT005DEN',
+    description: 'Giày tây da 5GDAT005DEN',
+    price: 990000,
+    views: 20,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/5gdat005den01-999k__copy__40410e3ca1a646e9a9a07b819c0fc472_master_44a2be43b7ae4722b08c2d01bac70e57_master.jpg',
+  },
+  {
+    id: 124,
+    categoryId: 'giay',
+    name: 'Giày tây da 5GDAB008DEN',
+    description: 'Giày tây da 5GDAB008DEN',
+    price: 1590000,
+    views: 56,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/5gdab008den01-1590k._6___copy__6cf815fdb15946d19fd201a9cb0a294b_master.jpg',
+  },
+];
+
+const QUAN_JEAN: IProduct[] = [
+  {
+    id: 126,
+    categoryId: 'quan-jean',
+    name: 'Quần Jeans Nam Sang Trọng, Lịch Lãm',
+    description: 'Quần Jeans Nam Sang Trọng, Lịch Lãm',
+    price: 599000,
+    views: 63,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/82_403eaa3085f24e49ab8ba82aebb90d4f_master.jpg',
+  },
+  {
+    id: 127,
+    categoryId: 'quan-jean',
+    name: 'Quần Jeans Nam Cao Cấp Bền Màu',
+    description: 'Quần Jeans Nam Cao Cấp Bền Màu',
+    price: 599000,
+    views: 63,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/77_c4b61fb5f0da47068ba78bc6c6106ab5_master.jpg',
+  },
+  {
+    id: 128,
+    categoryId: 'quan-jean',
+    name: 'Quần Jeans Nam 6QBDT008XAH rách Wash',
+    description: 'Quần Jeans Nam 6QBDT008XAH rách Wash',
+    price: 549000,
+    views: 97,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/84_bde6438d1c4144f58061a31f1cb3932a_master.jpg',
+  },
+  {
+    id: 129,
+    categoryId: 'quan-jean',
+    name: 'Quần Jeans Nam Kháng Khuẩn, Thoáng Mát',
+    description: 'Quần Jeans Nam Kháng Khuẩn, Thoáng Mát',
+    price: 579000,
+    views: 42,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/83_4395a045033541049c2a01f199f83af0_master.jpg',
+  },
+  {
+    id: 130,
+    categoryId: 'quan-jean',
+    name: 'Quần Jeans Nam Cao Cấp Bền Màu, Co Dãn',
+    description: 'Quần Jeans Nam Cao Cấp Bền Màu, Co Dãn',
+    price: 559000,
+    views: 44,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/77_6dfbd30208f946cc84fcc1f47ee1d981_master.jpg',
+  },
+];
+
+const QUAN_TAY: IProduct[] = [
+  {
+    id: 131,
+    categoryId: 'quan-tay',
+    name: 'Quần Âu Chống Nhăn, Co Giãn 7QAUB003DEN',
+    description: 'Quần Âu Chống Nhăn, Co Giãn 7QAUB003DEN',
+    price: 549000,
+    views: 44,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/170_2351ad7d1714439aa13cb64d230c85a5_master.png',
+  },
+  {
+    id: 132,
+    categoryId: 'quan-tay',
+    name: 'Quần Âu Chống Nhăn, Co Giãn, Bền Màu 7QAUB003TTT',
+    description: 'Quần Âu Chống Nhăn, Co Giãn, Bền Màu 7QAUB003TTT',
+    price: 549000,
+    views: 44,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/172_e311f1d0e3834e77b6a766387515cfe9_master.png',
+  },
+  {
+    id: 133,
+    categoryId: 'quan-tay',
+    name: 'Quần Âu Chống Nhăn, Co Giãn, Bền Màu 7QAUB003GHS',
+    description: 'Quần Âu Chống Nhăn, Co Giãn, Bền Màu 7QAUB003GHS',
+    price: 549000,
+    views: 49,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/168_b015ac524e064e62adef06bdb7d946ab_master.png',
+  },
+  {
+    id: 134,
+    categoryId: 'quan-tay',
+    name: 'uần Âu Chống Nhăn, Co Giãn, Bền Màu 6QAUC002DEN',
+    description: 'uần Âu Chống Nhăn, Co Giãn, Bền Màu 6QAUC002DEN',
+    price: 539000,
+    views: 66,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/169_0cace9948e964fcda5e5026a54cd86f2_master.png',
+  },
+  {
+    id: 135,
+    categoryId: 'quan-tay',
+    name: 'Quần Âu Chống Nhăn, Co Giãn, Bền Màu 6QAUC002TTT',
+    description: 'Quần Âu Chống Nhăn, Co Giãn, Bền Màu 6QAUC002TTT',
+    price: 539000,
+    views: 95,
+    thumbnail:
+      'https://product.hstatic.net/200000053174/product/171_d79bb4b9777c42938ea913a59dd869de_master.png',
   },
 ];
 
@@ -333,6 +482,100 @@ const IMAGES: Pick<Images, 'productId' | 'url'>[] = [
     'https://product.hstatic.net/200000053174/product/san_pham_764214fce50a4434a875629080e70a94_master.png',
     'https://product.hstatic.net/200000053174/product/6ag2t011den-795k__copy__2ccd1416b440491197ccc412acfd82c9_master.jpg',
     'https://product.hstatic.net/200000053174/product/18_57a9ce8aefa045e38a66c9c57da739b5_master.jpg',
+  ]),
+  ...fakeImages(121, [
+    'https://product.hstatic.net/200000053174/product/2_6b6f7bb0cdac49c6b8012e22f9c4afda_master.jpg',
+    'https://product.hstatic.net/200000053174/product/6gdat002den01-1500k__copy__432ddd68c9ff45b6b11799c6f804aabe_master.jpg',
+    'https://product.hstatic.net/200000053174/product/6gdat002den01-1500k__3___copy__39fdcc1801694d43ab8d59d4d07e0431_master.jpg',
+    'https://product.hstatic.net/200000053174/product/6gdat002den01-1500k__2___copy__984129c17922407aa3df7b9783f2035e_master.jpg',
+  ]),
+  ...fakeImages(122, [
+    'https://product.hstatic.net/200000053174/product/5gdat006nau01-999k_4___copy__4569bec0a77b47e9844f7b64ec0b34e8_master_b12a8ba0b25a46d8bdcb2667d3cb0f78_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdat006nau01-999k_5___copy__f2f79b3ebe9b4494a7553978bcdd13ab_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdat006nau01-999k__copy__7ed5e7d7a7ed42c0bc2539c32f63f457_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdat006nau01-999k_6___copy__835443721a17497ab70362bd13f54fc4_master.jpg',
+  ]),
+  ...fakeImages(123, [
+    'https://product.hstatic.net/200000053174/product/5gdat005den01-999k__copy__40410e3ca1a646e9a9a07b819c0fc472_master_44a2be43b7ae4722b08c2d01bac70e57_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdat005den01-999k_3___copy__950dfa53c8a54156a79f5dbe3ce65bac_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdat005den01-999k_1___copy__3b82c12fc723400d862a811d03282eb2_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdat005den01-999k_2___copy__d3e164b5ad3e42a39ca2152a284d4fe0_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdat005den01-999k_6___copy__62be4a6f990f4f1d882288897d20cc47_master.jpg',
+  ]),
+  ...fakeImages(124, [
+    'https://product.hstatic.net/200000053174/product/5gdab008den01-1590k._6___copy__6cf815fdb15946d19fd201a9cb0a294b_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdab008den01-1590k._4___copy__a8699630ed0149fbb580aebe9706b8ec_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdab008den01-1590k._1___copy__5781a896cb804348a9b886e5d86997a1_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdab008den01-1590k._2___copy__b435ab8a7c32406688bc3a9af584fd59_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5gdab008den01-1590k._7___copy__80cee32eab5f41b7a114755f6740ae51_master.jpg',
+  ]),
+  ...fakeImages(126, [
+    'https://product.hstatic.net/200000053174/product/82_403eaa3085f24e49ab8ba82aebb90d4f_master.jpg',
+    'https://product.hstatic.net/200000053174/product/65_c9fc4b9ea2c44508b0282013da9289e0_master.png',
+    'https://product.hstatic.net/200000053174/product/67_3f0bbf5a883b434a9268bb8b70eb5a0e_master.png',
+    'https://product.hstatic.net/200000053174/product/68_ebc4e02f0bb243cc9e7f1311e07ea735_master.png',
+    'https://product.hstatic.net/200000053174/product/19_a23d64cd68e14c4d97a69d99f27f82a9_master.png',
+  ]),
+  ...fakeImages(127, [
+    'https://product.hstatic.net/200000053174/product/77_c4b61fb5f0da47068ba78bc6c6106ab5_master.jpg',
+    'https://product.hstatic.net/200000053174/product/4_70695e22f89d4857be44bca3648188a2_master.png',
+    'https://product.hstatic.net/200000053174/product/7-pcj7c-abb-transformed_de1c6218d5b3481690665d07e23ebc32_master.png',
+    'https://product.hstatic.net/200000053174/product/san_pham__19_-transformed_a4cab1a85e5c40d5912e3b3165874a38_master.png',
+  ]),
+  ...fakeImages(128, [
+    'https://product.hstatic.net/200000053174/product/84_bde6438d1c4144f58061a31f1cb3932a_master.jpg',
+    'https://product.hstatic.net/200000053174/product/4_177dfbeee4824a1b9da2d0be7ae40f8f_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5_c1fdd0cb674e4985b01c53db2a8d0b13_master.jpg',
+    'https://product.hstatic.net/200000053174/product/6_1bd77f18e502448f9077280cce496b86_master.jpg',
+    'https://product.hstatic.net/200000053174/product/7_ce1d09cf61814c42accd9ef38d6a100b_master.jpg',
+  ]),
+  ...fakeImages(129, [
+    'https://product.hstatic.net/200000053174/product/83_4395a045033541049c2a01f199f83af0_master.jpg',
+    'https://product.hstatic.net/200000053174/product/6qbdt001xdm01-579k__3__f34f142d1c2e45528822e5dd5b82199a_master.jpg',
+    'https://product.hstatic.net/200000053174/product/1_96226ab33d1749b89214a5067dfb8701_master.jpg',
+    'https://product.hstatic.net/200000053174/product/5_5d904ed0c15b43f1b1ae30fcd2c43b26_master.jpg',
+    'https://product.hstatic.net/200000053174/product/2_a36da0c116d94659aa99cc7567dca59e_master.jpg',
+  ]),
+  ...fakeImages(130, [
+    'https://product.hstatic.net/200000053174/product/77_6dfbd30208f946cc84fcc1f47ee1d981_master.jpg',
+    'https://product.hstatic.net/200000053174/product/r__03242_6b41e483de9c43d9bef2f7a1b7073569_master.jpg',
+    'https://product.hstatic.net/200000053174/product/4apcb001ttt_1__d085b0f0142b4afb8c03fdc9551db34b_master.jpg',
+    'https://product.hstatic.net/200000053174/product/san_pham__3__0b9c22132ca847128dd27778c33c196e_master.jpg',
+    'https://product.hstatic.net/200000053174/product/4apcb001ttt_2__554044df1c6a4361bd44ac8525745e88_master.jpg',
+  ]),
+  ...fakeImages(131, [
+    'https://product.hstatic.net/200000053174/product/170_2351ad7d1714439aa13cb64d230c85a5_master.png',
+    'https://product.hstatic.net/200000053174/product/5_7080a5abc20d4dc6b6ec635b63d0cb40_master.jpg',
+    'https://product.hstatic.net/200000053174/product/3_47089476be5d464abb4c503dbea5a66a_master.jpg',
+    'https://product.hstatic.net/200000053174/product/4_ee8bf8a2b45b49698fa981678aefbb0e_master.jpg',
+    'https://product.hstatic.net/200000053174/product/3_2c2fc7fc399a4e3a8dc0fbb442cb2321_master.jpg',
+  ]),
+  ...fakeImages(132, [
+    'https://product.hstatic.net/200000053174/product/172_e311f1d0e3834e77b6a766387515cfe9_master.png',
+    'https://product.hstatic.net/200000053174/product/7_6b2e038b3f544dc2a25a2e6176aa822d_master.jpg',
+    'https://product.hstatic.net/200000053174/product/2_06fd8d9036884ed1a192f6db44867b85_master.jpg',
+    'https://product.hstatic.net/200000053174/product/3_2cc91e0878ec49feae8979dc1ce6fd40_master.jpg',
+    'https://product.hstatic.net/200000053174/product/3_aebdbb733d224507bf0d256894be7588_master.jpg',
+  ]),
+  ...fakeImages(133, [
+    'https://product.hstatic.net/200000053174/product/168_b015ac524e064e62adef06bdb7d946ab_master.png',
+    'https://product.hstatic.net/200000053174/product/3_d207af8af82f426fa41f93dc194a28ab_master.jpg',
+    'https://product.hstatic.net/200000053174/product/8_10c96ea4ece74c578770d492a2db7dec_master.png',
+    'https://product.hstatic.net/200000053174/product/san_pham_3b8198b5c3f64738be40bf26c15377f8_master.png',
+  ]),
+  ...fakeImages(134, [
+    'https://product.hstatic.net/200000053174/product/169_0cace9948e964fcda5e5026a54cd86f2_master.png',
+    'https://product.hstatic.net/200000053174/product/3_346c0099bacb441aba56281d91634bd8_master.jpg',
+    'https://product.hstatic.net/200000053174/product/3_2b5313137836485a9c3f3860de78f9bf_master.jpg',
+    'https://product.hstatic.net/200000053174/product/2_6fcbcd3bd7f045fbbc7f1bcb335bfee0_master.jpg',
+    'https://product.hstatic.net/200000053174/product/3_fd5b8ea0755047b9805f7894664c47c9_master.jpg',
+  ]),
+  ...fakeImages(135, [
+    'https://product.hstatic.net/200000053174/product/171_d79bb4b9777c42938ea913a59dd869de_master.png',
+    'https://product.hstatic.net/200000053174/product/3_8a95bb4a87134db795edea649f1bc73e_master.jpg',
+    'https://product.hstatic.net/200000053174/product/4_f9890b520786459bb840254ab6c483dc_master.jpg',
+    'https://product.hstatic.net/200000053174/product/4_b1467543b72f4f60a9bd5eb922a2050c_master.jpg',
+    'https://product.hstatic.net/200000053174/product/3_ee48106f0b92464aa017762d9f027b20_master.jpg',
   ]),
 ];
 
@@ -475,9 +718,110 @@ const MODELS = [
   { color: 'Xám', size: 'XS', quantity: 14, productId: 115 },
   { color: 'Trắng', size: 'XS', quantity: 10, productId: 115 },
   { color: 'Đen', size: 'XS', quantity: 17, productId: 115 },
+  // ao vest ...
+  { color: 'Đen', size: 'XL', quantity: 16, productId: 121 },
+  { color: 'Đen', size: 'S', quantity: 15, productId: 121 },
+  { color: 'Đen', size: 'XS', quantity: 16, productId: 121 },
+  { color: 'Nâu', size: 'XL', quantity: 7, productId: 122 },
+  { color: 'Nâu', size: 'XS', quantity: 13, productId: 122 },
+  { color: 'Nâu', size: 'L', quantity: 3, productId: 122 },
+  { color: 'Đen', size: 'XL', quantity: 5, productId: 123 },
+  { color: 'Đen', size: 'L', quantity: 12, productId: 123 },
+  { color: 'Đen', size: 'S', quantity: 17, productId: 123 },
+  { color: 'Đen', size: 'M', quantity: 7, productId: 124 },
+  { color: 'Đen', size: 'S', quantity: 15, productId: 124 },
+  { color: 'Đen', size: 'XL', quantity: 11, productId: 124 },
+  { color: 'Đen', size: 'XS', quantity: 6, productId: 126 },
+  { color: 'Xám', size: 'XS', quantity: 7, productId: 126 },
+  { color: 'Đen', size: 'L', quantity: 5, productId: 126 },
+  { color: 'Xám', size: 'L', quantity: 19, productId: 126 },
+  { color: 'Đen', size: 'M', quantity: 8, productId: 126 },
+  { color: 'Xám', size: 'M', quantity: 10, productId: 126 },
+  { color: 'Đen', size: 'S', quantity: 9, productId: 126 },
+  { color: 'Xám', size: 'S', quantity: 18, productId: 126 },
+  { color: 'Đen', size: 'XL', quantity: 1, productId: 126 },
+  { color: 'Xám', size: 'XL', quantity: 5, productId: 126 },
+  { color: 'Đen', size: 'M', quantity: 4, productId: 127 },
+  { color: 'Xanh', size: 'M', quantity: 0, productId: 127 },
+  { color: 'Đen', size: 'XS', quantity: 12, productId: 127 },
+  { color: 'Xanh', size: 'XS', quantity: 0, productId: 127 },
+  { color: 'Đen', size: 'L', quantity: 17, productId: 127 },
+  { color: 'Xanh', size: 'L', quantity: 7, productId: 127 },
+  { color: 'Đen', size: 'XL', quantity: 6, productId: 127 },
+  { color: 'Xanh', size: 'XL', quantity: 18, productId: 127 },
+  { color: 'Đen', size: 'S', quantity: 13, productId: 127 },
+  { color: 'Xanh', size: 'S', quantity: 10, productId: 127 },
+  { color: 'Đen', size: 'XL', quantity: 4, productId: 128 },
+  { color: 'Xám', size: 'XL', quantity: 16, productId: 128 },
+  { color: 'Đen', size: 'XS', quantity: 15, productId: 128 },
+  { color: 'Xám', size: 'XS', quantity: 17, productId: 128 },
+  { color: 'Đen', size: 'M', quantity: 0, productId: 128 },
+  { color: 'Xám', size: 'M', quantity: 6, productId: 128 },
+  { color: 'Đen', size: 'L', quantity: 16, productId: 129 },
+  { color: 'Xanh', size: 'L', quantity: 19, productId: 129 },
+  { color: 'Đen', size: 'M', quantity: 15, productId: 129 },
+  { color: 'Xanh', size: 'M', quantity: 15, productId: 129 },
+  { color: 'Đen', size: 'XL', quantity: 18, productId: 129 },
+  { color: 'Xanh', size: 'XL', quantity: 11, productId: 129 },
+  { color: 'Đen', size: 'XS', quantity: 2, productId: 129 },
+  { color: 'Xanh', size: 'XS', quantity: 9, productId: 129 },
+  { color: 'Đen', size: 'S', quantity: 1, productId: 129 },
+  { color: 'Xanh', size: 'S', quantity: 4, productId: 129 },
+  { color: 'Đen', size: 'XL', quantity: 4, productId: 130 },
+  { color: 'Xanh', size: 'XL', quantity: 6, productId: 130 },
+  { color: 'Đen', size: 'XS', quantity: 13, productId: 130 },
+  { color: 'Xanh', size: 'XS', quantity: 7, productId: 130 },
+  { color: 'Đen', size: 'S', quantity: 4, productId: 130 },
+  { color: 'Xanh', size: 'S', quantity: 0, productId: 130 },
+  { color: 'Đen', size: 'XS', quantity: 5, productId: 131 },
+  { color: 'Xanh', size: 'XS', quantity: 5, productId: 131 },
+  { color: 'Đen', size: 'L', quantity: 15, productId: 131 },
+  { color: 'Xanh', size: 'L', quantity: 6, productId: 131 },
+  { color: 'Đen', size: 'M', quantity: 13, productId: 131 },
+  { color: 'Xanh', size: 'M', quantity: 18, productId: 131 },
+  { color: 'Đen', size: 'XL', quantity: 1, productId: 132 },
+  { color: 'Xanh', size: 'XL', quantity: 11, productId: 132 },
+  { color: 'Xám', size: 'XL', quantity: 3, productId: 132 },
+  { color: 'Đen', size: 'M', quantity: 9, productId: 132 },
+  { color: 'Xanh', size: 'M', quantity: 14, productId: 132 },
+  { color: 'Xám', size: 'M', quantity: 2, productId: 132 },
+  { color: 'Đen', size: 'XS', quantity: 2, productId: 132 },
+  { color: 'Xanh', size: 'XS', quantity: 18, productId: 132 },
+  { color: 'Xám', size: 'XS', quantity: 2, productId: 132 },
+  { color: 'Đen', size: 'XL', quantity: 9, productId: 133 },
+  { color: 'Xanh', size: 'XL', quantity: 13, productId: 133 },
+  { color: 'Đen', size: 'XS', quantity: 5, productId: 133 },
+  { color: 'Xanh', size: 'XS', quantity: 15, productId: 133 },
+  { color: 'Đen', size: 'L', quantity: 18, productId: 133 },
+  { color: 'Xanh', size: 'L', quantity: 10, productId: 133 },
+  { color: 'Đen', size: 'S', quantity: 16, productId: 133 },
+  { color: 'Xanh', size: 'S', quantity: 0, productId: 133 },
+  { color: 'Đen', size: 'XS', quantity: 17, productId: 134 },
+  { color: 'Xanh', size: 'XS', quantity: 18, productId: 134 },
+  { color: 'Xám', size: 'XS', quantity: 12, productId: 134 },
+  { color: 'Đen', size: 'M', quantity: 15, productId: 134 },
+  { color: 'Xanh', size: 'M', quantity: 12, productId: 134 },
+  { color: 'Xám', size: 'M', quantity: 5, productId: 134 },
+  { color: 'Đen', size: 'S', quantity: 4, productId: 134 },
+  { color: 'Xanh', size: 'S', quantity: 6, productId: 134 },
+  { color: 'Xám', size: 'S', quantity: 3, productId: 134 },
+  { color: 'Đen', size: 'M', quantity: 11, productId: 135 },
+  { color: 'Xanh', size: 'M', quantity: 17, productId: 135 },
+  { color: 'Xám', size: 'M', quantity: 14, productId: 135 },
+  { color: 'Đen', size: 'XS', quantity: 12, productId: 135 },
+  { color: 'Xanh', size: 'XS', quantity: 17, productId: 135 },
+  { color: 'Xám', size: 'XS', quantity: 5, productId: 135 },
+  { color: 'Đen', size: 'S', quantity: 4, productId: 135 },
+  { color: 'Xanh', size: 'S', quantity: 12, productId: 135 },
+  { color: 'Xám', size: 'S', quantity: 5, productId: 135 },
+  { color: 'Đen', size: 'XL', quantity: 12, productId: 135 },
+  { color: 'Xanh', size: 'XL', quantity: 1, productId: 135 },
+  { color: 'Xám', size: 'XL', quantity: 5, productId: 135 },
 ];
 
-// console.log(fakeProductModels(115, [COLORS.Grey, COLORS.White, COLORS.Black]));
+// console.log([
+//   ...fakeProductModels(135, [COLORS.Black, COLORS.Blue, COLORS.Grey]),
+// ]);
 
 /**
  Prisma ======================================
@@ -544,7 +888,15 @@ async function main() {
   // products-------------------------------
   await prisma.product.createMany({
     skipDuplicates: true,
-    data: [...AO_POLO, ...AO_SOMI, ...AO_KHOAC_GIO],
+    data: [
+      ...AO_POLO,
+      ...AO_SOMI,
+      ...AO_KHOAC_GIO,
+      ...AO_VEST,
+      ...GIAY,
+      ...QUAN_JEAN,
+      ...QUAN_TAY,
+    ],
   });
 
   //images-------------------------------
