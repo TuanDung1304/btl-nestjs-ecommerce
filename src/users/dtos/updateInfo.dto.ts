@@ -1,5 +1,5 @@
 import {
-  IsDate,
+  IsDateString,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -28,7 +28,7 @@ export class UpdateProfileDto {
   @IsOptional()
   address?: string;
 
-  @IsDate()
+  @IsDateString()
   @IsOptional()
-  birthDay?: Date;
+  birthday?: Date;
 }

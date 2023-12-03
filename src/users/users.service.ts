@@ -119,7 +119,7 @@ export class UsersService {
     );
 
     return {
-      lastSeen: lastSeen.lastSeen,
+      lastSeen: lastSeen?.lastSeen ?? new Date(0),
       notifications: userNotification.map((item) => item.notification),
     };
   }

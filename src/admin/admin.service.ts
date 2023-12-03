@@ -1,7 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { groupBy, orderBy, reverse } from 'lodash';
+import { CreateVoucherDto } from 'src/admin/dtos/createVoucher.dto';
 import { UpdateUserStatus } from 'src/admin/dtos/updateUserStatus.dto';
-import { ChartData, ChartName, DashboardData, TopDeal } from 'src/admin/types';
+import {
+  ChartData,
+  ChartName,
+  DashboardData,
+  TopDeal,
+  Voucher,
+} from 'src/admin/types';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -128,5 +135,38 @@ export class AdminService {
     return {
       message: 'Cập nhật thành công',
     };
+  }
+
+  async createVoucher(dto: CreateVoucherDto) {
+    const voucher = await this.prisma.voucher.findUnique({
+      where: { code: dto.code },
+    });
+    if (voucher) {
+      throw new ForbiddenException('Voucher code đã tồn tại');
+    }
+    await this.prisma.voucher.create({ data: dto });
+
+    return { message: 'Tạo voucher thành công' };
+  }
+
+  async getVouchers(): Promise<Voucher[]> {
+    const vouchers = await this.prisma.voucher.findMany({
+      include: {
+        orders: { select: { id: true } },
+      },
+    });
+
+    return vouchers.map(({ updatedAt, orders, ...rest }) => {
+      const status =
+        Date.now() < rest.finishedAt.getTime() &&
+        Date.now() > rest.startedAt.getTime()
+          ? 'Hiệu lực'
+          : 'Hết hạn';
+      return {
+        ...rest,
+        status,
+        used: orders.length,
+      };
+    });
   }
 }

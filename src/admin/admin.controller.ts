@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminService } from 'src/admin/admin.service';
+import { CreateVoucherDto } from 'src/admin/dtos/createVoucher.dto';
 import { UpdateUserStatus } from 'src/admin/dtos/updateUserStatus.dto';
 import { AdminGuard } from 'src/common/guards/roles.guard';
 
@@ -26,5 +27,17 @@ export class AdminController {
   @HttpCode(HttpStatus.OK)
   updateUserStatus(@Body() dto: UpdateUserStatus) {
     return this.adminService.updateUserStatus(dto);
+  }
+
+  @Post('/create-voucher')
+  @HttpCode(HttpStatus.CREATED)
+  createVoucher(@Body() dto: CreateVoucherDto) {
+    return this.adminService.createVoucher(dto);
+  }
+
+  @Get('/vouchers')
+  @HttpCode(HttpStatus.OK)
+  getVouchers() {
+    return this.adminService.getVouchers();
   }
 }
