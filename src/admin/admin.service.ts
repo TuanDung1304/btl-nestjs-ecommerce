@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { groupBy, orderBy, reverse } from 'lodash';
 import { CreateVoucherDto } from 'src/admin/dtos/createVoucher.dto';
 import { UpdateUserStatus } from 'src/admin/dtos/updateUserStatus.dto';
+import { UpdateVoucherDto } from 'src/admin/dtos/updateVoucher.dto';
 import {
   ChartData,
   ChartName,
@@ -144,6 +145,10 @@ export class AdminService {
     if (voucher) {
       throw new ForbiddenException('Voucher code đã tồn tại');
     }
+
+    if (dto.startedAt > dto.finishedAt) {
+      throw new ForbiddenException('Thời gian không hợp lệ');
+    }
     await this.prisma.voucher.create({ data: dto });
 
     return { message: 'Tạo voucher thành công' };
@@ -154,19 +159,47 @@ export class AdminService {
       include: {
         orders: { select: { id: true } },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
 
     return vouchers.map(({ updatedAt, orders, ...rest }) => {
-      const status =
-        Date.now() < rest.finishedAt.getTime() &&
-        Date.now() > rest.startedAt.getTime()
-          ? 'Hiệu lực'
-          : 'Hết hạn';
+      const status = this.getVoucherStatus(rest.startedAt, rest.finishedAt);
       return {
         ...rest,
         status,
         used: orders.length,
       };
     });
+  }
+
+  private getVoucherStatus(startedAt: Date, finishedAt: Date) {
+    if (Date.now() < startedAt.getTime()) {
+      return 'Pending';
+    }
+    if (Date.now() < finishedAt.getTime() && Date.now() > startedAt.getTime()) {
+      return 'Active';
+    }
+    if (Date.now() > finishedAt.getTime()) {
+      return 'Expired';
+    }
+  }
+
+  async updateVoucher(dto: UpdateVoucherDto) {
+    const voucher = await this.prisma.voucher.findUnique({
+      where: { code: dto.code },
+    });
+    if (!voucher) {
+      throw new ForbiddenException('Voucher không tồn tại');
+    }
+    await this.prisma.voucher.update({
+      where: { code: dto.code },
+      data: dto,
+    });
+
+    return {
+      message: 'Cập nhật voucher thành công',
+    };
   }
 }
