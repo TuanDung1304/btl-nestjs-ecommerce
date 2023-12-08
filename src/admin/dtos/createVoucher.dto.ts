@@ -22,6 +22,11 @@ export class CreateVoucherDto {
 
   @IsInt()
   @IsNotEmpty()
+  @Min(0, { message: 'Giá trị đơn tối thiểu phải lớn hơn 0' })
+  minOrderPrice: number;
+
+  @IsInt()
+  @IsNotEmpty()
   @Min(1, { message: 'Số lượng voucher phải lớn hơn 0' })
   maxUser: number;
 

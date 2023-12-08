@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { groupBy, orderBy, reverse } from 'lodash';
 import { CreateVoucherDto } from 'src/admin/dtos/createVoucher.dto';
+import { DeleteVoucherDto } from 'src/admin/dtos/deleteVoucher.dto';
 import { UpdateUserStatus } from 'src/admin/dtos/updateUserStatus.dto';
 import { UpdateVoucherDto } from 'src/admin/dtos/updateVoucher.dto';
 import {
@@ -200,6 +201,22 @@ export class AdminService {
 
     return {
       message: 'Cập nhật voucher thành công',
+    };
+  }
+
+  async deleteVoucher(dto: DeleteVoucherDto) {
+    const voucher = await this.prisma.voucher.findUnique({
+      where: { id: dto.id },
+    });
+    if (!voucher) {
+      throw new ForbiddenException('Voucher không tồn tại');
+    }
+    await this.prisma.voucher.delete({
+      where: { id: dto.id },
+    });
+
+    return {
+      message: 'Xóa voucher thành công',
     };
   }
 }

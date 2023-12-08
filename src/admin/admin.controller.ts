@@ -12,6 +12,7 @@ import { CreateVoucherDto } from 'src/admin/dtos/createVoucher.dto';
 import { UpdateUserStatus } from 'src/admin/dtos/updateUserStatus.dto';
 import { UpdateVoucherDto } from 'src/admin/dtos/updateVoucher.dto';
 import { AdminGuard } from 'src/common/guards/roles.guard';
+import { DeleteProductDto } from 'src/products/dto/product.dto';
 
 @UseGuards(AdminGuard)
 @Controller('admin')
@@ -46,5 +47,11 @@ export class AdminController {
   @HttpCode(HttpStatus.OK)
   updateVoucher(@Body() dto: UpdateVoucherDto) {
     return this.adminService.updateVoucher(dto);
+  }
+
+  @Post('/delete-voucher')
+  @HttpCode(HttpStatus.OK)
+  deleteVoucher(@Body() dto: DeleteProductDto) {
+    return this.adminService.deleteVoucher(dto);
   }
 }
