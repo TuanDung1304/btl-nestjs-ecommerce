@@ -24,3 +24,16 @@ export type TopDeal = Pick<
 export type DashboardData = Record<ChartName, ChartData> & {
   topDeals: TopDeal[];
 };
+
+export interface Voucher {
+  id: number;
+  name: string;
+  code: string;
+  amount: number;
+  used: number;
+  maxUser: number;
+  createdAt: Date;
+  startedAt: Date;
+  finishedAt: Date;
+  status: string;
+}

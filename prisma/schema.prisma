@@ -134,12 +134,17 @@ model Order {
 }
 
 model Voucher {
-  id        Int      @id @default(autoincrement())
-  key       String   @unique
-  discount  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
+  id            Int      @id @default(autoincrement())
+  name          String
+  code          String   @unique
+  amount        Int
+  maxUser       Int
+  minOrderPrice Int
+  startedAt     DateTime
+  finishedAt    DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  orders        Order[]
 
   @@map("vouchers")
 }

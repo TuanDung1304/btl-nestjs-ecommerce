@@ -32,7 +32,7 @@ export class CreateOrderDto {
 
   @IsString()
   @IsOptional()
-  voucher?: string;
+  voucherCode?: string;
 
   @IsString()
   @IsOptional()

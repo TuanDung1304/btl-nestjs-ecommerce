@@ -1,7 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { groupBy, orderBy, reverse } from 'lodash';
+import { CreateVoucherDto } from 'src/admin/dtos/createVoucher.dto';
+import { DeleteVoucherDto } from 'src/admin/dtos/deleteVoucher.dto';
 import { UpdateUserStatus } from 'src/admin/dtos/updateUserStatus.dto';
-import { ChartData, ChartName, DashboardData, TopDeal } from 'src/admin/types';
+import { UpdateVoucherDto } from 'src/admin/dtos/updateVoucher.dto';
+import {
+  ChartData,
+  ChartName,
+  DashboardData,
+  TopDeal,
+  Voucher,
+} from 'src/admin/types';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -127,6 +136,87 @@ export class AdminService {
 
     return {
       message: 'Cập nhật thành công',
+    };
+  }
+
+  async createVoucher(dto: CreateVoucherDto) {
+    const voucher = await this.prisma.voucher.findUnique({
+      where: { code: dto.code },
+    });
+    if (voucher) {
+      throw new ForbiddenException('Voucher code đã tồn tại');
+    }
+
+    if (dto.startedAt > dto.finishedAt) {
+      throw new ForbiddenException('Thời gian không hợp lệ');
+    }
+    await this.prisma.voucher.create({ data: dto });
+
+    return { message: 'Tạo voucher thành công' };
+  }
+
+  async getVouchers(): Promise<Voucher[]> {
+    const vouchers = await this.prisma.voucher.findMany({
+      include: {
+        orders: { select: { id: true } },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    return vouchers.map(({ updatedAt, orders, ...rest }) => {
+      const status = this.getVoucherStatus(rest.startedAt, rest.finishedAt);
+      return {
+        ...rest,
+        status,
+        used: orders.length,
+      };
+    });
+  }
+
+  private getVoucherStatus(startedAt: Date, finishedAt: Date) {
+    if (Date.now() < startedAt.getTime()) {
+      return 'Pending';
+    }
+    if (Date.now() < finishedAt.getTime() && Date.now() > startedAt.getTime()) {
+      return 'Active';
+    }
+    if (Date.now() > finishedAt.getTime()) {
+      return 'Expired';
+    }
+  }
+
+  async updateVoucher(dto: UpdateVoucherDto) {
+    const voucher = await this.prisma.voucher.findUnique({
+      where: { code: dto.code },
+    });
+    if (!voucher) {
+      throw new ForbiddenException('Voucher không tồn tại');
+    }
+    await this.prisma.voucher.update({
+      where: { code: dto.code },
+      data: dto,
+    });
+
+    return {
+      message: 'Cập nhật voucher thành công',
+    };
+  }
+
+  async deleteVoucher(dto: DeleteVoucherDto) {
+    const voucher = await this.prisma.voucher.findUnique({
+      where: { id: dto.id },
+    });
+    if (!voucher) {
+      throw new ForbiddenException('Voucher không tồn tại');
+    }
+    await this.prisma.voucher.delete({
+      where: { id: dto.id },
+    });
+
+    return {
+      message: 'Xóa voucher thành công',
     };
   }
 }

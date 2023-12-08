@@ -910,6 +910,30 @@ async function main() {
     skipDuplicates: true,
     data: MODELS,
   });
+
+  // vouchers ---------------------
+  await prisma.voucher.createMany({
+    data: [
+      {
+        name: 'Tri ân 20/11',
+        amount: 100000,
+        code: 'nhagiao',
+        maxUser: 50,
+        minOrderPrice: 500000,
+        startedAt: new Date(),
+        finishedAt: new Date(Date.now() + 7 * 24 * 3600 * 1000),
+      },
+      {
+        name: 'Noel',
+        amount: 50000,
+        code: 'noel',
+        minOrderPrice: 300000,
+        maxUser: 50,
+        startedAt: new Date(),
+        finishedAt: new Date(Date.now() + 7 * 24 * 3600 * 1000),
+      },
+    ],
+  });
 }
 
 main()

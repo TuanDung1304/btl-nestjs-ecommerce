@@ -9,12 +9,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class OrdersService {
   constructor(private prisma: PrismaService) {}
   async createOrder(dto: CreateOrderDto, userId: number) {
-    const voucher = dto?.voucher
+    const voucher = dto?.voucherCode
       ? await this.prisma.voucher.findUnique({
-          where: { key: dto.voucher },
+          where: { code: dto.voucherCode },
         })
       : null;
-    if (dto?.voucher && !voucher) {
+    if (dto?.voucherCode && !voucher) {
       throw new ForbiddenException('Voucher không tồn tại!');
     }
     const cartItems = await this.prisma.cartItem.findMany({
@@ -22,23 +22,40 @@ export class OrdersService {
       select: {
         quantity: true,
         productModel: {
-          select: { product: { select: { price: true } } },
+          select: {
+            id: true,
+            product: { select: { price: true, discountedPrice: true } },
+            quantity: true,
+          },
         },
       },
     });
     if (!cartItems?.length) {
       throw new ForbiddenException('Không có sản phẩm nào để đặt hàng');
     }
+
+    const notEnough = cartItems.some(
+      (item) => item.quantity > item.productModel.quantity,
+    );
+    if (notEnough) {
+      throw new ForbiddenException('Không đủ sản phẩm trong kho');
+    }
+
     const totalModelPrice = cartItems.reduce(
-      (acc, item) => acc + item.quantity * item.productModel.product.price,
+      (acc, item) =>
+        acc +
+        item.quantity *
+          (item.productModel.product?.discountedPrice ??
+            item.productModel.product.price),
       0,
     );
 
-    const discountVoucher = voucher?.discount ?? 0;
+    const discountVoucher = voucher?.amount ?? 0;
 
     const shipmentPrice =
       totalModelPrice > MIN_PRICE_TO_FREE_SHIP ? 0 : SHIPMENT_COST;
-    const totalPrice = totalModelPrice - discountVoucher - shipmentPrice;
+
+    const totalPrice = totalModelPrice - discountVoucher + shipmentPrice;
 
     const order = await this.prisma.order.create({
       data: {
@@ -58,6 +75,18 @@ export class OrdersService {
         orderId: order.id,
       },
     });
+    await this.prisma.$transaction(
+      cartItems.map((item) =>
+        this.prisma.productModel.update({
+          where: {
+            id: item.productModel.id,
+          },
+          data: {
+            quantity: { decrement: item.quantity },
+          },
+        }),
+      ),
+    );
 
     return {
       message: 'Đặt hàng thành công.',
