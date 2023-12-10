@@ -27,14 +27,14 @@ export class CreateOrderDto {
   district: string;
 
   @IsString()
+  @IsNotEmpty()
+  paymentMethod: string;
+
+  @IsString()
   @IsOptional()
   note?: string;
 
   @IsString()
   @IsOptional()
   voucherCode?: string;
-
-  @IsString()
-  @IsOptional()
-  avatar?: string;
 }

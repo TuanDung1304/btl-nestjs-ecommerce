@@ -67,6 +67,7 @@ export class OrdersService {
         shipmentPrice,
         voucherId: voucher?.id,
         note: dto?.note,
+        paymentMethod: dto.paymentMethod,
       },
     });
     await this.prisma.cartItem.updateMany({
@@ -121,6 +122,7 @@ export class OrdersService {
         district: true,
         province: true,
         totalPrice: true,
+        voucher: { select: { amount: true } },
         status: true,
         createdAt: true,
         user: {
@@ -149,12 +151,13 @@ export class OrdersService {
       },
     });
 
-    return orders.map(({ cartItems, user, ...rest }) => ({
+    return orders.map(({ cartItems, user, voucher, ...rest }) => ({
       ...rest,
       totalModel: cartItems.reduce((acc, item) => acc + item.quantity, 0),
       totalProduct: uniq(cartItems.map((item) => item.productModel.product.id))
         .length,
       userName: `${user.firstName} ${user.lastName}`,
+      voucherDiscount: Number(voucher.amount),
     }));
   }
 
