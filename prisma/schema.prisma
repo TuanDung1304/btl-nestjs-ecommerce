@@ -121,6 +121,7 @@ model Order {
   province      String
   district      String
   shipmentPrice Float
+  paymentMethod String
   totalPrice    Float
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt

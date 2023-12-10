@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { CartsModule } from './carts/carts.module';
 import { OrdersModule } from './orders/orders.module';
 import { AdminModule } from './admin/admin.module';
+import { VouchersModule } from './vouchers/vouchers.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AdminModule } from './admin/admin.module';
     CartsModule,
     OrdersModule,
     AdminModule,
+    VouchersModule,
   ],
   providers: [
     {
